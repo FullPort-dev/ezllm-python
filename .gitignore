@@ -1,0 +1,7 @@
+__pycache__
+notebooks/
+.env
+.vscode
+.pytest_cache
+.ipynb
+.ipynb_checkpoints

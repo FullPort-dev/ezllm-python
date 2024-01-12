@@ -1,0 +1,2 @@
+from .ExtractionResponse import ExtractionMethodResponse, ExtractionOutputGroups, ExtractionOutputGroup, ExtractionOutputData
+from .QA import QAMethodResponse, QAOutputGroups, QAOutputGroup, QAOutputData
