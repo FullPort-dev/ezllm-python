@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Literal
 
 DocumentFilterType = List[str]
 CollectionFilterType = List[str]
@@ -10,10 +10,8 @@ MetadataFilterType = Dict[str, Any]
 # CollectionFilterType = List[Union[Collection, str]]
 # MetadataFilterType = Dict[str, Any]
 
-class GroupTypes(Enum):
-    all='all'
-    collection='collection'
-    document='document'
+
+GroupTypes = Literal['all', 'collection', 'document']
 
 
 

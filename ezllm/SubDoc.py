@@ -1,4 +1,10 @@
-from typing import Generic, List, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, List, TypeVar
+
+import requests
+
+from ezllm.errors import NotFound
+if TYPE_CHECKING:
+    from ezllm.Documents import Document
 
 S = TypeVar('S', bound='SubDoc')
 
@@ -56,8 +62,45 @@ score={self.score}
 
 class SubDocs(Generic[S]):
     SubDocClass: S = SubDoc
-    def __init__(self, subdocs) -> None:
-        self.subdocs: List[S] = [self.SubDocClass(x) for x in subdocs]
+    doc: 'Document'
+    def __init__(
+            self,
+            doc,
+            subdocs: List[Any]
+        ) -> None:
+        self.doc = doc
+        self._subdocs: List[S] = [self.SubDocClass(x) for x in subdocs]
+    
+    @property
+    def url(self):
+        return f'{self.doc.url}/subdocs'
+    
+    def get(self):
+        print(self.url)
+        response = requests.get(
+            self.url,
+            headers=self.doc.client.headers,
+        )
+        if response.status_code == 200:
+            # TODO format this into a Document
+            data = response.json()
+            self._subdocs = data
+
+            return self
+        else:
+            print("ERROR FETCHING DOCUMENT", response.status_code)
+            raise NotFound("Document")
+
+    def get_cache(self):
+        # TODO : basing load state off of data len is only temporary
+        if len(self._subdocs) == 0:
+            self.get()
+        
+        return self._subdocs
+    
+    @property
+    def subdocs(self):
+        return self.get_cache()
 
     def __len__(self):
         return len(self.subdocs)
@@ -72,15 +115,15 @@ class SubDocs(Generic[S]):
         return self.__repr_nested__(indent=0)    
 
     def __repr_nested__(self, indent=0):
-        ind = ' ' * indent
-        nested_repr = (' ' * (indent + 4)) + ("\n" + (' ' * (indent+4))).join([obj.__repr_nested__(indent+4) for obj in self.subdocs])
+        ind = ' ' * (indent+4)
+        nested_repr = (' ' * (indent + 8)) + ("\n" + (' ' * (indent+8))).join([repr(obj) for obj in self.subdocs])
 
         return f"""\
 {self.__class__.__name__}(
 {ind}subdocs=[
 {nested_repr}
 {ind}]
-{" " * (indent-4)})"""
+{" " * (indent)})"""
 
     
 class SearchSubDocs(SubDocs[SearchSubDoc]):

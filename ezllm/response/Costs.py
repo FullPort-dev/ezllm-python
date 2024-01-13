@@ -24,6 +24,17 @@ class ResponseCosts:
         self.costs = [ResponseCost(**c) for c in data]
         self.total_cost: int = total_cost
 
+
+
+    def __len__(self):
+        return len(self.costs)
+
+    def __iter__(self):
+        return iter(self.costs)
+    
+    def __getitem__(self, index: int) -> ResponseCost:
+        return self.costs[index]
+
     def __repr__(self):
         return self.__repr_nested__(indent=0)
     

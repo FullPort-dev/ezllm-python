@@ -5,3 +5,7 @@ notebooks/
 .pytest_cache
 .ipynb
 .ipynb_checkpoints
+dist
+build
+ezllm.egg-info
+.DS_Store

@@ -69,9 +69,8 @@ class ResponseDocs(Generic[R]):
         return self.__repr_nested__(indent=0)
     
     def __repr_nested__(self, indent=0):
-        print('indent rdocs', indent)
         ind = ' ' * (indent+4)
-        nested_repr = (' ' * (indent+8)) + ("\n" + ('' *(indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.docs])
+        nested_repr = (' ' * (indent+8)) + ("\n" + (' ' *(indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.docs])
 
         return f"""\
 {self.__class__.__name__}(

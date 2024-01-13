@@ -40,9 +40,6 @@ class QAOutputGroups(OutputGroups[QAOutputGroup]):
         return output
         # return [group.data for group in self.groups]
 
-    def __iter__(self):
-        return iter(self.groups)
-
 class QAMethodResponse(MethodResponse[QAOutputGroups, QAOutputDatum]):
     data: List[QAOutputDatum]
     # data: List[ExtractionOutputData]

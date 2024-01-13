@@ -1,3 +1,4 @@
+from ezllm.types import GroupTypes
 from .Documents import Document
 from .Collection import Collection
 from .Client import Client
@@ -51,17 +52,22 @@ class Filter:
             "metadata" : self.create_metadata()
         }}
 
-    def scan(self):
+    def scan(
+            self,
+            group: GroupTypes = 'all',
+        ):
         from .Scan import ScanRetrieval
         return ScanRetrieval(
             client=self.client,
-            filter=self
+            filter=self,
+            group=group
         )
 
     
     def search(
             self,
             query,
+            group: GroupTypes = 'all',
             n_docs = 10
         ):
         from .Search import SearchRetrieval
@@ -69,7 +75,8 @@ class Filter:
             client=self.client,
             query=query,
             n_docs=n_docs,
-            filter=self
+            filter=self,
+            group=group,
         )
         
     def get(self):

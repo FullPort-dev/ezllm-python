@@ -15,7 +15,7 @@ class ScanRetrieval(RetrievalBase[ScanResponse]):
         self,
         client: Client = None,
         filter: Filter  = None,
-        group: GroupTypes = GroupTypes.all.value
+        group: GroupTypes = 'all',
     ):
         super().__init__(client, filter, group)
     

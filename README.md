@@ -151,3 +151,18 @@ EZLLM_SECRET = secret
 EZLLM_API_URL = https://api.ezllm.io # optional
 EZLLM_RUN_URL = https://run.ezllm.io # optional
 ```
+
+
+## Deploy
+```bash
+pip show ezllm
+
+# to build
+python3 setup.py sdist bdist_wheel
+
+# to install and run locally
+pip3 install --upgrade dist/ezllm-0.1-py3-none-any.whl
+
+# uninstall local
+pip3 uninstall ezllm
+```

@@ -1,5 +1,6 @@
+from ezllm import Collection
 from ezllm.Documents import Document
-from tests.constants import TEST_DOC_ID
+from tests.constants import TEST_COL_ID, TEST_DOC_ID
 
 
 def test_search_document():
@@ -40,3 +41,14 @@ def test_search_filter():
     doc = docs[0]
     assert doc.name == 'Reddit Test File'
     assert len(docs) == 1
+
+
+def test_collection_search():
+    col = Collection(TEST_COL_ID)
+    retrieval = col.search('Hello World')
+    print(retrieval)
+    assert retrieval.output == None
+    retrieval.get()
+    assert retrieval.output is not None
+    docs = retrieval.get()
+    print(docs)

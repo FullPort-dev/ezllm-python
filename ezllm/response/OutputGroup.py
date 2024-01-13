@@ -34,7 +34,6 @@ class OutputGroup(Generic[D]):
 
     @property
     def data(self):
-        # print("YO123", self._data.data)
         return self._data.data
 
     def __repr__(self):

@@ -5,6 +5,7 @@ from typing import Any, List, Optional
 from ezllm.Documents import Document
 from ezllm.constants import UPLOAD_TIMEOUT
 from ezllm.errors import FileProcessingError, NotFound
+from ezllm.types import GroupTypes
 from .Client import Client
 import mimetypes
 import json
@@ -92,11 +93,25 @@ class Collection():
     
     def filter(self,
             documents: List[str] = [],
-            collections: List[str] = [],
             metadata: Any = {}
         ):
         from .Filter import Filter
-        return Filter(documents=documents, collections=collections, metadata=metadata)
+        return Filter(documents=documents, collections=[self], metadata=metadata)
+
+    def search(
+            self,
+            query,
+            group: GroupTypes = 'all',
+            n_docs = 10
+        ):
+        from .Search import SearchRetrieval
+        return SearchRetrieval(
+            client=self.client,
+            query=query,
+            n_docs=n_docs,
+            filter=self.filter(),
+            group=group
+        )
 
     
     def get(self):

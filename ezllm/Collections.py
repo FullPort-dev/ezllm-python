@@ -21,5 +21,11 @@ class Collections:
 
         
     
+    def __len__(self):
+        return len(self.collections)
+
     def __iter__(self):
         return iter(self.collections)
+    
+    def __getitem__(self, index: int) -> Collection:
+        return self.collections[index]

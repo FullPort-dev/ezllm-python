@@ -23,6 +23,9 @@ def test_init_collection_by_name():
 def test_init_document():
     document = Document(id=TEST_DOC_ID)
     document.get()
+    print(document)
     assert 'Reddit Test File' == document.name
     assert 'active' == document.state
     assert TEST_DOC_ID == document.id
+    # print(document.subdocs)
+    assert len(document.subdocs) == 1

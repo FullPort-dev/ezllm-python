@@ -2,6 +2,7 @@ from typing import List, overload
 from ezllm.response import SearchResponse
 from ezllm.Retrieval import RetrievalBase
 from ezllm.response.ResponseDocs import SearchResponseDoc
+from ezllm.types import GroupTypes
 from .Client import Client
 from .Filter import Filter
 
@@ -13,7 +14,7 @@ class SearchRetrieval(RetrievalBase[SearchResponse]):
             client: Client,
             filter: Filter  = None,
             n_docs = 10,
-            group='all'
+            group: GroupTypes = 'all',
         ):
         super().__init__(client, filter, group)
         self.query = query
@@ -42,3 +43,5 @@ class SearchRetrieval(RetrievalBase[SearchResponse]):
     def docs(self) -> List[SearchResponseDoc]:
         self.get_cache()
         return self.output.docs
+    
+        
