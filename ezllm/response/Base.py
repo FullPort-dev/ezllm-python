@@ -20,12 +20,15 @@ class ResponseBase(Generic[O]):
     def docs(self):
         return ResponseDocs(docs=self.doc_groups.data)
 
-    def __repr__(self, indent=4) -> str:
-        ind = " " * indent
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0) -> str:
+        ind = " " * (indent+4)
         return f"""\
 {self.__class__.__name__}(
-{ind}costs={self.costs}
-{ind}doc_groups={self.doc_groups}
+{ind}costs={self.costs.__repr_nested__(indent+4)}
+{ind}doc_groups={self.doc_groups.__repr_nested__(indent+4)}
 )"""
 
 
@@ -38,13 +41,16 @@ class MethodResponse(ResponseBase[DocOutputGroups], Generic[O, DT]):
     @property
     def data(self) -> List[DT]:
         return self.output.data
+
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
     
-    def __repr__(self, indent=4) -> str:
-        ind = " " * indent
+    def __repr_nested__(self, indent=0) -> str:
+        ind = " " * (indent+4)
         return f"""\
 {self.__class__.__name__}(
-{ind}costs={self.costs}
+{ind}costs={self.costs.__repr_nested__(indent+4)}
 {f"{ind}# add the include_docs=True argument to return docs" if len(self.doc_groups) == 0 else ""}
-{ind}doc_groups={self.doc_groups}
-{ind}output_groups={self.output}
+{ind}doc_groups={self.doc_groups.__repr_nested__(indent+4)}
+{ind}output_groups={self.output.__repr_nested__(indent+4)}
 )"""

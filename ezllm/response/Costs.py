@@ -14,6 +14,9 @@ class ResponseCost:
     desc: Optional[str] = None
     reportedCost: Optional[float] = None
     
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * indent
+        return f'{ind}{self.__repr__()}'
 
 class ResponseCosts:
     def __init__(self, data, total_cost):
@@ -21,10 +24,13 @@ class ResponseCosts:
         self.costs = [ResponseCost(**c) for c in data]
         self.total_cost: int = total_cost
 
-    def __repr__(self, indent=8):
-        ind = ' ' * indent
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent + 4)
 
-        nested_repr = (' '*(indent+4)) + ("\n" + (' '*(indent+4))).join([repr(obj) for obj in self.costs])
+        nested_repr = ind + ("\n" + ind).join([obj.__repr_nested__(indent) for obj in self.costs])
 
         return f"""\
 {self.__class__.__name__}(
@@ -32,4 +38,4 @@ class ResponseCosts:
 {ind}costs=[
 {nested_repr}
 {ind}]
-{" " * 4})"""
+{" " * indent})"""

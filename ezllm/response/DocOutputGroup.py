@@ -17,15 +17,18 @@ class DocOutputGroup(Generic[D]):
     def data(self) -> List[ResponseDoc]:
         return self._data.data
 
-    def __repr__(self, indent=16):
-        ind = ' ' * indent
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent+4)
 
         return f"""\
 {self.__class__.__name__}(
 {ind}id={self.id or 'None'}
 {ind}type={self.type}
-{ind}data={self._data}
-{" "*12})"""
+{ind}data={self._data.__repr_nested__(indent+4)}
+{" " * indent})"""
     
     
 class SearchDocOutputGroup(DocOutputGroup[SearchResponseDoc]):

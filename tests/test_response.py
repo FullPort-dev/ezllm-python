@@ -83,10 +83,12 @@ def test_scan_response():
 def test_search_response():
     response = SearchResponse(SEARCH_RESPONSE_DATA)
     print(response)
+    print(response.docs)
     doc = response.docs[0]
     subdoc = doc.subdocs[0]
 
     assert type(subdoc.score) == float
+    
 
 
 

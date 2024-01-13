@@ -10,15 +10,19 @@ class OutputData(Generic[DT]):
     def __init__(self, data: DT):
         self.data: DT = data
 
-    def __repr__(self, indent=20) -> str:
-        ind = ' ' * indent
+
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0) -> str:
+        ind = ' ' * (indent+4)
         data_str = json.dumps(self.data, indent=4)
         data_str = ("\n" + ind).join(data_str.splitlines())
 
         return f"""\
 {self.__class__.__name__}(
 {ind}data={data_str}
-{' ' * (indent-4)})"""
+{' ' * (indent)})"""
         
 class OutputGroup(Generic[D]):
     OutputDataClass: D = OutputData
@@ -33,14 +37,17 @@ class OutputGroup(Generic[D]):
         # print("YO123", self._data.data)
         return self._data.data
 
-    def __repr__(self, indent=16) -> str:
-        ind = ' ' * indent
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0) -> str:
+        ind = ' ' * (indent+4)
         return f"""\
 {self.__class__.__name__}(
 {ind}type={self.type}
 {ind}id={self.id}
-{ind}output={self._data}
-{' ' * (indent-4)})"""
+{ind}output={self._data.__repr_nested__(indent+4)}
+{' ' * (indent)})"""
 
 
         
@@ -77,14 +84,16 @@ class OutputGroups(Generic[T]):
     def __iter__(self):
         return iter(self.groups)
     
-
-    def __repr__(self, indent=8):
-        ind = ' ' * indent
-        nested_repr = (' ' * (indent + 4)) + ("\n" + (' ' * (indent+4))).join([repr(obj) for obj in self.groups])
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent+4)
+        nested_repr = (' ' * (indent+8)) + ("\n" + (' ' * (indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.groups])
 
         return f"""\
 {self.__class__.__name__}(
 {ind}groups=[
 {nested_repr}
 {ind}]
-{" " * (indent-4)})"""
+{" " * (indent)})"""

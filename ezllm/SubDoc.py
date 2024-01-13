@@ -16,7 +16,10 @@ class SubDoc:
         # it would be impossible (without generics) to 
         # determine the doc type
 
-    def __repr__(self, indent=4):
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+
+    def __repr_nested__(self, indent=0):
         ind = ' ' * indent
         return f"""\
 {self.__class__.__name__}(
@@ -34,7 +37,10 @@ class SearchSubDoc(SubDoc):
         super().__init__(data)
         self.score = self._data["score"]
 
-    def __repr__(self, indent=4):
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0):
         ind = ' ' * indent
         return f"""\
 {self.__class__.__name__}(
@@ -62,9 +68,12 @@ class SubDocs(Generic[S]):
     def __getitem__(self, index: int) -> S:
         return self.subdocs[index]
     
-    def __repr__(self, indent=0):
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)    
+
+    def __repr_nested__(self, indent=0):
         ind = ' ' * indent
-        nested_repr = (' ' * (indent + 4)) + ("\n" + (' ' * (indent+4))).join([repr(obj) for obj in self.subdocs])
+        nested_repr = (' ' * (indent + 4)) + ("\n" + (' ' * (indent+4))).join([obj.__repr_nested__(indent+4) for obj in self.subdocs])
 
         return f"""\
 {self.__class__.__name__}(
@@ -72,6 +81,7 @@ class SubDocs(Generic[S]):
 {nested_repr}
 {ind}]
 {" " * (indent-4)})"""
+
     
 class SearchSubDocs(SubDocs[SearchSubDoc]):
     subdocs: List[SearchSubDoc]

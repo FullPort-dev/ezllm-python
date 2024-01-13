@@ -14,14 +14,17 @@ class ResponseDoc(Document):
             data=doc
         )
 
-    def __repr__(self, indent=28):
-        ind = ' ' * indent
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent + 4)
 
         return f"""\
 {self.__class__.__name__}(
 {ind}name={self.name}
 {ind}SubDocs={len(self.subdocs)}
-{" " * 24})"""
+{" " * indent})"""
 
 class SearchResponseDoc(ResponseDoc):
     from ezllm.SubDoc import SearchSubDocs, SubDocs
@@ -61,17 +64,21 @@ class ResponseDocs(Generic[R]):
     
     def __iter__(self):
         return iter(self.docs)
+
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
     
-    def __repr__(self, indent=20):
-        ind = ' ' * indent
-        nested_repr = (' ' * (indent+4)) + ("\n" + ind).join([repr(obj) for obj in self.docs])
+    def __repr_nested__(self, indent=0):
+        print('indent rdocs', indent)
+        ind = ' ' * (indent+4)
+        nested_repr = (' ' * (indent+8)) + ("\n" + ('' *(indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.docs])
 
         return f"""\
 {self.__class__.__name__}(
 {ind}docs=[
 {nested_repr}
 {ind}]
-{' ' * 16})"""
+{' ' * indent})"""
     
 class SearchResponseDocs(ResponseDocs[SearchResponseDoc]):
     DocClass = SearchResponseDoc
