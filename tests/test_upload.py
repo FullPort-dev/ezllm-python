@@ -11,7 +11,7 @@ def test_upload_path():
 def test_upload_file():
     file = open('./tests/data/test_doc.md', 'r')
     col = Collection(name="Default Collection")
-    doc = col.upload(file=file)
+    doc = col.upload(file)
 
     assert doc.name == 'test_doc.md'
     assert doc.state == 'active'

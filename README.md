@@ -8,7 +8,7 @@ EzLLM simplifies the process of
 4. LLM optimization
 5. LLM output parsing
 
-## [Read The Docs](https://docs.ezllm.io)
+## [Home Page](https://docs.ezllm.io) --- [Docs](https://docs.ezllm.io) --- [Developer Console](https://docs.ezllm.io)
 
 for more information
 
@@ -54,9 +54,10 @@ col = ezllm.Collection("documentation")
 file = open('./file.pdf', 'r')
 await col.upload(file)
 
-# Upload an array of files
-files = [open('./file1.pdf'), open('./file2.txt')]
-await col.upload(files)
+# Upload by path
+await col.upload(path='./file.pdf')
+# Or
+await col.upload(path='./file.pdf', name="My File Name", type='pdf')
 ```
 
 ## Retrieve Relevant Documents
@@ -67,6 +68,7 @@ response = col.search('search query').get()
 
 print(response)
 
+# Output
 SearchResponse(
     costs=ResponseCosts(
         total_cost=10.0,
@@ -105,6 +107,7 @@ SearchResponse(
 # so you can reference all of the underlying docs with .docs
 print(response.docs)
 
+# Output
 ResponseDocs(
     docs=[
         SearchResponseDoc(
@@ -117,17 +120,11 @@ ResponseDocs(
 for doc in response.docs:
     print(doc)
 
+    # Output
     SearchResponseDoc(
         name="Test File"
         SubDocs=1
     )
-
-
-
-# you can iterate through the results
-
-for result in realted_documents:
-    print(result)
 ```
 
 
@@ -136,6 +133,46 @@ for result in realted_documents:
 from ezllm.methods import QAMethod
 
 col.search('search query').run(QAMethod(questions=["Is this document relevant to my research in XYZ"]))
+
+# Output
+QAMethodResponse(
+    costs=ResponseCosts(
+        total_cost=0.08994,
+        costs=[
+            ResponseCost(cost=0.01061, date='2023-12-27T18:11:18.722257', step='method', usage=835, limitType='llm', limitId='gpt-4-1106-preview', desc=None, reportedCost=None)
+            ...
+        ]
+    )
+    # add the include_docs=True argument to return docs
+    doc_groups=DocOutputGroups(
+        groups=[
+
+        ]
+    )
+    output_groups=QAOutputGroups(
+        groups=[
+            QAOutputGroup(
+                type="document"
+                id="658b4e441f41ead7592562de"
+                output=QAOutputData(
+                    data=[
+                        {
+                            "question": "Who are the authors?",
+                            "answer": "Sylvain Burns, Joseph Brehaut, Jamie Britton",
+                            "relevant": 100
+                        },
+                        {
+                            "question": "What organizations is this document from?",
+                            "answer": "Journal of Professional Engineering, University of Ottawa",
+                            "relevant": 100
+                        }
+                    ]
+                )
+            )
+            ...
+        ]
+    )
+)
 ```
 
 
