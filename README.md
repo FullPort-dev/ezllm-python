@@ -8,7 +8,7 @@ EzLLM simplifies the process of
 4. LLM optimization
 5. LLM output parsing
 
-## [Home Page](https://docs.ezllm.io) --- [Docs](https://docs.ezllm.io) --- [Developer Console](https://docs.ezllm.io)
+## [Home Page](https://ezllm.io) --- [Docs](https://docs.ezllm.io) --- [Developer Console](https://console.ezllm.io)
 
 for more information
 
@@ -197,9 +197,24 @@ pip show ezllm
 # to build
 python3 setup.py sdist bdist_wheel
 
-# to install and run locally
+# Install
+## local
 pip3 install --upgrade dist/ezllm-0.1-py3-none-any.whl
 
-# uninstall local
+## test-pypi
+pip3 install --index-url https://test.pypi.org/simple/ ezllm
+
+## pypi
+pip3 install ezllm
+
+# Uninstall
 pip3 uninstall ezllm
+
+# Upload
+## test-pypi
+python3 -m twine upload --repository testpypi dist/*
+
+
+
+## pypi
 ```
