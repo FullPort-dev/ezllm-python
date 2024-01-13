@@ -121,7 +121,7 @@ for doc in response.docs:
         name="Test File"
         SubDocs=1
     )
-```
+
 
 
 # you can iterate through the results
@@ -133,9 +133,9 @@ for result in realted_documents:
 
 ## Run Methods against a Retrieval
 ```py
-from ezllm.methods import Summarization
+from ezllm.methods import QAMethod
 
-col.search('search query').run(Summarization())
+col.search('search query').run(QAMethod(questions=["Is this document relevant to my research in XYZ"]))
 ```
 
 
