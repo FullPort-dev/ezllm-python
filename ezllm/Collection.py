@@ -1,10 +1,8 @@
 from enum import Enum
 from io import BufferedReader
-import time
 from typing import TYPE_CHECKING, Any, List, Optional, overload
 from ezllm.Documents import Document
-from ezllm.constants import UPLOAD_TIMEOUT
-from ezllm.errors import FileProcessingError, NotFound
+from ezllm.errors import NotFound
 from ezllm.types import GroupTypes
 from .Client import Client
 import mimetypes

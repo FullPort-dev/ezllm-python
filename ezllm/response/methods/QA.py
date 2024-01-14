@@ -29,6 +29,7 @@ class QAOutputGroup(OutputGroup[QAOutputData]):
     def questions(self):
         return self._data.questions
     
+    
 
 class QAOutputGroups(OutputGroups[QAOutputGroup]):
     OutputGroupClass = QAOutputGroup

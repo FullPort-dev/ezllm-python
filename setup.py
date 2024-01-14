@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='ezllm',
-    version='0.1.1',
+    version='0.1.2',
     packages=find_packages(),
     install_requires=[
         # list your package dependencies here
         'requests',
-        'python-dotenv'
+        'python-dotenv',
+        'pydantic',
     ],
     extras_require={
         'extra' : ['pandas']

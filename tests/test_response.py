@@ -36,9 +36,9 @@ def test_qa_response():
     o = response.output.by_id("658b4e441f41ead7592562de")
 
     for question in response.data:
-        assert type(question.question) == str
-        assert type(question.answer) == str
-        assert type(question.relevant) == int
+        assert type(question['question']) == str
+        assert type(question['answer']) == str
+        assert type(question['relevant']) == int
 
     for group in response.output:
         d = group.data
