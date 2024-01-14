@@ -1,7 +1,7 @@
 from enum import Enum
 from io import BufferedReader
 import time
-from typing import Any, List, Optional
+from typing import TYPE_CHECKING, Any, List, Optional, overload
 from ezllm.Documents import Document
 from ezllm.constants import UPLOAD_TIMEOUT
 from ezllm.errors import FileProcessingError, NotFound
@@ -10,6 +10,11 @@ from .Client import Client
 import mimetypes
 import json
 import requests
+
+if TYPE_CHECKING:
+    from ezllm.methods.Base import MethodBase
+    from ezllm.methods import ExtractionMethod, QAMethod
+    from ezllm.response import ExtractionMethodResponse, QAMethodResponse
 
 class FileTypes(Enum):
     pdf='pdf'
@@ -57,7 +62,9 @@ class Collection():
     
     
     
-    def update(self, name):
+    def update(self, name=None):
+        if name == None:
+            raise Exception("Must Include Name in Collection Update")
         data = {
             "name": name
         }
@@ -88,9 +95,6 @@ class Collection():
         return self
         
     
-    def collection(self, *args, **kwargs):
-        return Collection(*args, client=self, **kwargs)   
-    
     def filter(self,
             documents: List[str] = [],
             metadata: Any = {}
@@ -112,8 +116,44 @@ class Collection():
             filter=self.filter(),
             group=group
         )
-
     
+    def scan(
+            self,
+            group: GroupTypes = 'all',
+        ):
+        from .Scan import ScanRetrieval
+        return ScanRetrieval(
+            client=self.client,
+            group=group,
+            filter=self.filter()
+        )
+    
+    
+    @overload
+    def run(
+            self,
+            method: 'ExtractionMethod' = None,
+            group: GroupTypes = 'all',
+            include_docs: bool = False
+        ) -> 'ExtractionMethodResponse': ...
+
+    @overload
+    def run(
+            self,
+            method: 'QAMethod' = None,
+            group: GroupTypes = 'all',
+            include_docs: bool = False,
+        ) -> 'QAMethodResponse': ...
+        
+    def run(
+            self,
+            method: 'MethodBase' = None,
+            group: GroupTypes = 'all',
+            include_docs: bool = False,
+        ):
+        return self.scan(group).run(method, include_docs=include_docs)
+
+
     def get(self):
         if self._id is not None:
             response = requests.get(
@@ -130,7 +170,7 @@ class Collection():
             data = response.json()
             self.data = data
             self._id = data['_id']
-            return data
+            return self
         else:
             raise NotFound("Collection")
 
@@ -189,13 +229,17 @@ class Collection():
     
     def document(self,id):
         from .Documents import Document
-        return Document(id=id,cid=self.id,client=self.client)
+        return Document(
+            id=id,
+            cid=self.id,
+            client=self.client
+        )
     
 
     @property
     def name(self) -> str:
-        if self.name:
-            return self.name
+        if self._name:
+            return self._name
         data = self.get_cache()
         return data['name']
     

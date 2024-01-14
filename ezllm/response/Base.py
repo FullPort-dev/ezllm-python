@@ -1,24 +1,25 @@
 from dataclasses import dataclass
-from typing import Generic, List, TypeVar
+from typing import Dict, Generic, List, TypeVar
 from ezllm.response.Costs import ResponseCosts
 from ezllm.response.ResponseDocs import ResponseDocs
 from ezllm.response.DocOutputGroup import DocOutputGroups
 from ezllm.response.OutputGroup import OutputData, OutputGroups
 
-O = TypeVar('O', bound=OutputGroups)
+O = TypeVar('O', bound=DocOutputGroups)
 DT = TypeVar('DT', bound=OutputData)
 
 
 class ResponseBase(Generic[O]):
+    doc_groups: DocOutputGroups
     DocGroupClass = DocOutputGroups
-    def __init__(self, data):
+    def __init__(self, data: Dict):
         self.costs = ResponseCosts(data['costs'], data['total_cost'])
         self.duration = data['duration']
-        self.doc_groups: O = self.DocGroupClass(data['doc_groups'])
+        self.doc_groups: O = self.DocGroupClass(data.get('doc_groups', []))
 
     @property
     def docs(self):
-        return ResponseDocs(docs=self.doc_groups.data)
+        return self.doc_groups.docs
 
     def __repr__(self):
         return self.__repr_nested__(indent=0)
@@ -29,14 +30,14 @@ class ResponseBase(Generic[O]):
 {self.__class__.__name__}(
 {ind}costs={self.costs.__repr_nested__(indent+4)}
 {ind}doc_groups={self.doc_groups.__repr_nested__(indent+4)}
-)"""
+{' ' * indent})"""
 
 
 class MethodResponse(ResponseBase[DocOutputGroups], Generic[O, DT]):
     OutputGroupsClass: O = OutputGroups
     def __init__(self, data):
         super().__init__(data)
-        self.output: O = self.OutputGroupsClass(data['output_groups'])
+        self.output: O = self.OutputGroupsClass(data.get('output_groups', []))
     
     @property
     def data(self) -> List[DT]:

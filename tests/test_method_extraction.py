@@ -35,11 +35,11 @@ def test_extraction():
     doc = Document(TEST_DOC_ID)
     method = ExtractionMethod(schema=ExtractModel)
     response = doc.run(method)
+    print(response)
     
     posts = response.data[0]['posts']
     dfs = response.dfs
     df = dfs['posts']
-    
     assert posts[2]['post_title'] == "[Serious] What's the scariest fact you wish you didn't know?"
     assert posts[0]['upvotes'] == 7792
     assert posts[-1]['user'] == "minerman30"

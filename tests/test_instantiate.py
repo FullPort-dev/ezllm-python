@@ -11,13 +11,19 @@ def test_init_client():
 def test_init_collection():
     collection = Collection(id=TEST_COL_ID)
     data = collection.get()
-    assert 'test' == data['name']
-    assert TEST_COL_ID == data['_id']
+    assert 'test' == data.name
+    assert TEST_COL_ID == data.id
+
+def test_init_collection_no_kwarg():
+    collection = Collection(TEST_COL_ID)
+    data = collection.get()
+    assert 'test' == data.name
+    assert TEST_COL_ID == data.id
 
 def test_init_collection_by_name():
     collection = Collection(name="test")
     data = collection.get()
-    assert collection._name == data['name']
+    assert collection._name == data.name
 
 
 def test_init_document():

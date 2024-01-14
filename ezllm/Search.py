@@ -42,6 +42,6 @@ class SearchRetrieval(RetrievalBase[SearchResponse]):
     @property
     def docs(self) -> List[SearchResponseDoc]:
         self.get_cache()
-        return self.output.docs
+        return self._output.docs
     
         

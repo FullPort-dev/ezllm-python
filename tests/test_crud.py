@@ -1,3 +1,4 @@
+import pytest
 import ezllm
 from ezllm.Collection import Collection
 from ezllm.Collection import Document
@@ -15,8 +16,20 @@ def test_update_collection():
     col.update("Amogus3")
 
 def test_delete_collection():
-    Collection.create(name="Amogus14").delete()
-    
+    # insure it doesn't exist at the start
+    with pytest.raises(Exception):
+        col = Collection(name="Delete Me!")
+        col.get()
+
+    # create then immediately delete
+    Collection.create(name="Delete Me!").delete()
+
+    # insure it doesn't exist at the end
+    with pytest.raises(Exception):
+        col = Collection(name="Delete Me!")
+        col.get()
+
+
 def test_delete_doc():
     file = open('./tests/data/test_doc.md', 'r')
     col = Collection(name="Default Collection")

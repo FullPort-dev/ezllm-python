@@ -23,18 +23,29 @@ class RetrievalBase(Generic[T]):
         self.client = client or Client()
         self.filter = filter or Filter()
         self.group = group
-        self.output: T = None
+        self._output: T = None
     
     @overload
-    def run(self, method: QAMethod) -> QAMethodResponse:
-        pass
+    def run(
+            self,
+            method: QAMethod,
+            include_docs: bool = False
+        ) -> QAMethodResponse: ...
 
     @overload
-    def run(self, method:ExtractionMethod) -> ExtractionMethodResponse:
-        pass
+    def run(
+            self,
+            method:ExtractionMethod,
+            include_docs: bool = False
+        ) -> ExtractionMethodResponse: ... 
 
-    def run(self, method: MethodBase):
+    def run(
+            self,
+            method: MethodBase,
+            include_docs: bool = False
+        ):
         data = {
+            'include_docs': include_docs,
             **self.json(),
             **method.json(),
         }
@@ -53,8 +64,8 @@ class RetrievalBase(Generic[T]):
         if response.status_code == 200:
             data = response.json()
             self.data = data
-            self.output = self.ResponseClass(data)
-            return self.output
+            self._output = self.ResponseClass(data)
+            return self._output
         else:
             print("Error: ", response.status_code)
         
@@ -64,16 +75,19 @@ class RetrievalBase(Generic[T]):
     
 
     def get_cache(self):
-        if self.output:
-            return self.output
+        if self._output:
+            return self._output
         self.get()
-        return self.output
+        return self._output
     
     @property
     def docs(self) -> List[ResponseDoc]:
-        self.get_cache()
         return self.output.docs
     
+    @property
+    def output(self):
+        self.get_cache()
+        return self._output
 
     def __repr__(self):
         return self.__repr_nested__(indent=0)
@@ -83,6 +97,6 @@ class RetrievalBase(Generic[T]):
 
         return f"""\
 {self.__class__.__name__}(
-{ind}output={self.output.__repr_nested__(indent+4) if self.output else None}
+{ind}output={self._output.__repr_nested__(indent+4) if self.output else None}
 {ind}retrieval={self.json()}
 {" " * (indent)})"""

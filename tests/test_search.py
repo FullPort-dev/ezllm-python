@@ -46,9 +46,9 @@ def test_search_filter():
 def test_collection_search():
     col = Collection(TEST_COL_ID)
     retrieval = col.search('Hello World')
-    print(retrieval)
-    assert retrieval.output == None
+    assert retrieval._output == None
     retrieval.get()
     assert retrieval.output is not None
     docs = retrieval.get()
+    print(retrieval)
     print(docs)

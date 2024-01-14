@@ -15,6 +15,6 @@ def test_scan_filter_no_get():
     doc = Document(TEST_DOC_ID)
     output = doc.filter().scan()
     docs = output.docs
-    output.output.costs
-
+    output._output.costs
+    print(output)
     assert len(docs) == 1

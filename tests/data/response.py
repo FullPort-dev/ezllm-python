@@ -358,6 +358,167 @@ QA_RESPONSE_DATA = {
     "total_cost": 0.08994
 }
 
+
+QA_INCLUDE_DOCS_RESPONSE_DATA = {
+    "duration": 0.0944509506225586,
+    "costs": [
+        {
+            "cost": 0.01061,
+            "date": "2023-12-27T18:11:18.722257",
+            "desc": None,
+            "step": "method",
+            "usage": 835,
+            "limitType": "llm",
+            "limitId": "gpt-4-1106-preview"
+        },
+        {
+            "cost": 0.01677,
+            "date": "2023-12-27T18:11:33.154518",
+            "desc": None,
+            "step": "method",
+            "usage": 1387,
+            "limitType": "llm",
+            "limitId": "gpt-4-1106-preview"
+        },
+        {
+            "cost": 0.01446,
+            "date": "2023-12-27T18:11:42.677551",
+            "desc": None,
+            "step": "method",
+            "usage": 1264,
+            "limitType": "llm",
+            "limitId": "gpt-4-1106-preview"
+        },
+        {
+            "cost": 0.01874,
+            "date": "2023-12-27T18:11:51.773802",
+            "desc": None,
+            "step": "method",
+            "usage": 1632,
+            "limitType": "llm",
+            "limitId": "gpt-4-1106-preview"
+        },
+        {
+            "cost": 0.009210000000000001,
+            "date": "2023-12-27T18:11:55.009121",
+            "desc": None,
+            "step": "method",
+            "usage": 833,
+            "limitType": "llm",
+            "limitId": "gpt-4-1106-preview"
+        },
+        {
+            "cost": 0.02015,
+            "date": "2023-12-27T18:12:04.453414",
+            "desc": None,
+            "step": "method",
+            "usage": 1691,
+            "limitType": "llm",
+            "limitId": "gpt-4-1106-preview"
+        }
+    ],
+    "doc_groups" : [{'type': 'all', 'id': None, 'docs': [{'_id': '659a54a5d9569e7b627dea93', 'updatedOn': '2024-01-08T07:51:56.570000', 'createdOn': '2024-01-08T07:51:54.430000', 'name': 'Reddit Test File', 'wid': 'test', 'cid': '659a54a5d9569e7b627dea93', 'state': 'active', 'errorMessage': None, 'metadata': {'type': 'text'}, 'file': {'contentType': 'text/plain', 'filename': 'reddit.txt', 'size': 3299}, 'parser': {}, 'link': {'type': 'default', 'href': None, 'external': False}, 'users': [], 'groups': [], 'visibility': 'private', 'deletedTime': None, 'subdocs': [{'page_content': 'jump to content\nMY SUBREDDITS\n\t\t\t\tPOPULAR-ALL-RANDOM-USERS\xa0|\xa0ASKREDDIT-PICS-GAMING-FUNNY-MOVIES-MILDLYINTERESTING-WORLDNEWS-DATAISBEAUTIFUL-DIY-NEWS-EXPLAINLIKEIMFIVE-TODAYILEARNED-OLDSCHOOLCOOL-VIDEOS-NOTTHEONION-BOOKS-TIFU-SHOWERTHOUGHTS-TWOXCHROMOSOMES-AWW-FUTUROLOGY-MUSIC-JOKES-LIFEPROTIPS-ASKSCIENCE-SCIENCE-IAMA-SPACE-GADGETS-SPORTS-UPLIFTINGNEWS-FOOD-NOSLEEP-HISTORY-GIFS-INTERNETISBEAUTIFUL-GETMOTIVATED-WRITINGPROMPTS-ANNOUNCEMENTS-PHILOSOPHY-DOCUMENTARIES-EARTHPORN-CREEPY-PHOTOSHOPBATTLES-LISTENTOTHIS-BLOG\nMORE »\n\t\treddit.com\xa0hotnewrisingcontroversialtopwiki\n\t\tWant to join?\xa0Log in\xa0or\xa0sign up\xa0in seconds.|English\n\n\nremember mereset password\nlogin\n\n\nSubmit a new link\n\nSubmit a new text post\n\n\nGet an ad-free experience with special benefits, and directly support Reddit.\nGet Reddit Premium\n\nWelcome to Reddit.\nCome for the cats, stay for the empathy.\nBECOME A REDDITOR\nand start exploring.\n×\npopular in:\xa0Canada\n\n1\n\n7792\n\n\nWhat was the “…seriously?” gift you opened this Christmas?\xa0(self.AskReddit)\nsubmitted\xa011 hours ago\xa0by\xa0Leading_War_5847\xa0to\xa0r/AskReddit\n\t\t10166 commentssharesavehidereport\n\n\n\n\n\n2\n\n•\n\n\n[Post Game Thread] The Brooklyn Nets (15-15) defeat the Detroit Pistons (2-28), 118 - 112 behind 21/4/3 from Mikal Bridges as the Pistons break the record for the most consecutive losses by a team in a single seasonPost Game Thread\xa0(self.nba)\n\nsubmitted\xa0an hour ago\xa0*\xa0by\xa0UnbiasedNBAFan_[🍰]\xa0to\xa0r/nba\n\t\t821 commentssharesavehidereport\n\n\n\n\n3\n\n2937\n\n\n[Serious] What\'s the scariest fact you wish you didn\'t know?Serious Replies Only\xa0(self.AskReddit)\nsubmitted\xa09 hours ago\xa0by\xa0Msjann\xa0to\xa0r/AskReddit\n\t\t3188 commentssharesavehidereport\n\n\n\n\n4\n\n44.4k\n\n￼\nA daughter wrote a brutal "rot in hell" kind of obituary about her mom in a newspaper in Michigan.\xa0(i.redd.it)\n\nsubmitted\xa08 hours ago\xa0by\xa0Lifegoesonforever\xa0to\xa0r/pics\n\t\t2153 commentssharesavehidereport\n\n\n\n\n5\n\n8455\n\n￼\n"Calling Eminem the greatest at rap is white supremacy"\xa0🇲 🇮 🇸 🇨 \xa0(i.redd.it)\n\nsubmitted\xa04 hours ago\xa0by\xa0Visqo\xa0to\xa0r/facepalm\n\t\t2302 commentssharesavehidereport\n\n\n\n\n6\n\n342\n\n￼\nCanadians aren’t actually that interested in the economy, and that’s a problemOpinion Piece\xa0(theglobeandmail.com)\nsubmitted\xa04 hours ago\xa0by\xa0joe4942\xa0to\xa0r/canada\n\t\t299 commentssharesavehidereport\n\n\n\n\n7\n\n859\n\n￼\nWell this is the most accurate map legend everMeme\xa0(i.redd.it)\n\nsubmitted\xa02 hours ago\xa0by\xa0Alternative-Pay6464\xa0to\xa0r/nhl\n\t\t97 commentssharesavehidereport\n\n\n\n\n8\n\n4982\n\n￼\nWoman with 6 kids upset at this year’s haul\xa0(i.redd.it)\n\nsubmitted\xa08 hours ago\xa0by\xa0adelltfm\xa0to\xa0r/ChoosingBeggars\n\t\t1452 commentssharesavehidereport\n\n\n\n\n9\n\n•\n\n￼\n\'Parasite\' actor Lee Sun-kyun found dead amid investigation over drug allegationsNews\xa0(koreatimes.co.kr)\nsubmitted\xa0an hour ago\xa0by\xa0mcfw31\xa0to\xa0r/movies\n\t\t155 commentssharesavehidereport\n\n\n\n\n10\n\n11.7k\n\n￼\nTIL on 9/11/01 a guest at the Marriott World Trade Center hotel, located at the base of the towers, awoke to the first plane crashing but went back to bed. He then got up, turned on the news, took a shower, packed his things, and only decided to evacuate when the South Tower collapsed onto the hotel\xa0(voanews.com)\nsubmitted\xa05 hours ago\xa0by\xa0minerman30\xa0to\xa0r/todayilearned\n\t\t334 commentssharesavehidereport', 'metadata': {'cid': '659a54a5d9569e7b627dea93', 'did': '659a54a5d9569e7b627dea93', 'index': 0, 'wid': 'test'}, 'score': 0.0}]}]}],
+    "output_groups": [
+        {
+            "id": "658b4e441f41ead7592562de",
+            "type": "document",
+            "output": [
+                {
+                    "question": "Who are the authors?",
+                    "answer": "Sylvain Boet, Joseph K. Burns, Jamie Brehaut, Meghan Britton, Teodor Grantcharov, Jeremy Grimshaw, Meghan McConnell, Glenn Posner, Isabelle Raiche, Sukhbir Singh, Patricia Trbovich & Cole Etherington",
+                    "relevant": 100
+                },
+                {
+                    "question": "What organizations is this document from?",
+                    "answer": "Journal of Interprofessional Care, Taylor & Francis Group, LLC, University of Ottawa, Ottawa Hospital Research Institute",
+                    "relevant": 100
+                }
+            ]
+        },
+        {
+            "id": "658b4e451f41ead7592562e1",
+            "type": "document",
+            "output": [
+                {
+                    "question": "Who are the authors?",
+                    "answer": "Kjestine Emilie M\u00f8ller, Jette Led S\u00f8rensen, Martha Krogh Topperzer, Christian Koerner, Bent Ottesen, Mikkel Rosendahl, Teodor Grantcharov, Jeanett Strandbygaard",
+                    "relevant": 100
+                },
+                {
+                    "question": "What organizations is this document from?",
+                    "answer": "Copenhagen University Hospital \u2013 Rigshospitalet, University of Copenhagen, Li Ka Shing Knowledge Institute, St Michael\u2019s Hospital, University of Toronto",
+                    "relevant": 100
+                }
+            ]
+        },
+        {
+            "id": "658b4e461f41ead7592562e4",
+            "type": "document",
+            "output": [
+                {
+                    "question": "Who are the authors?",
+                    "answer": "Cole Etherington, Maxime L\u00ea, Laurie Proulx, Sylvain Boet",
+                    "relevant": 100
+                },
+                {
+                    "question": "What organizations is this document from?",
+                    "answer": "The Ottawa Hospital, Ottawa Hospital Research Institute",
+                    "relevant": 100
+                }
+            ]
+        },
+        {
+            "id": "658b4e461f41ead7592562e7",
+            "type": "document",
+            "output": [
+                {
+                    "question": "Who are the authors?",
+                    "answer": "Jeanett Strandbygaard, Nynne Dose, Kjestine Emilie Moeller, Lauren Gordon, Eliane Shore, Susanne Rosth\u00f8j, Bent Ottesen, Teodor Grantcharov, Jette Led Sorensen",
+                    "relevant": 100
+                },
+                {
+                    "question": "What organizations is this document from?",
+                    "answer": "BMJ Open Quality",
+                    "relevant": 100
+                }
+            ]
+        },
+        {
+            "id": "658b4e471f41ead7592562ea",
+            "type": "document",
+            "output": [
+                {
+                    "question": "Who are the authors?",
+                    "answer": "Barbara Sadick",
+                    "relevant": 100
+                },
+                {
+                    "question": "What organizations is this document from?",
+                    "answer": "The Wall Street Journal",
+                    "relevant": 100
+                }
+            ]
+        },
+        {
+            "id": "658b4e431f41ead7592562db",
+            "type": "document",
+            "output": [
+                {
+                    "question": "Who are the authors?",
+                    "answer": "Michael B. Eppler, Aref S. Sayegh, Marissa Maas, Abhishek Venkat, Sij Hemal, Mihir M. Desai, Andrew J. Hung, Teodor Grantcharov, Giovanni E. Cacciamani, Mitchell G. Goldenberg",
+                    "relevant": 100
+                },
+                {
+                    "question": "What organizations is this document from?",
+                    "answer": "Catherine and Joseph Aresty Department of Urology, Keck School of Medicine, University of Southern California; Department of Surgery, Clinical Excellence Research Centre, Stanford University",
+                    "relevant": 100
+                }
+            ]
+        }
+    ],
+    "total_cost": 0.08994
+}
+
 SCAN_RESPONSE_DATA = {'costs': [], 'duration': 0.09629106521606445, 'doc_groups': [{'type': 'all', 'id': None, 'docs': [{'_id': '659a54a5d9569e7b627dea93', 'updatedOn': '2024-01-08T07:51:56.570000', 'createdOn': '2024-01-08T07:51:54.430000', 'name': 'Reddit Test File', 'wid': 'test', 'cid': '659a54a5d9569e7b627dea93', 'state': 'active', 'errorMessage': None, 'metadata': {'type': 'text'}, 'file': {'contentType': 'text/plain', 'filename': 'reddit.txt', 'size': 3299}, 'parser': {}, 'link': {'type': 'default', 'href': None, 'external': False}, 'users': [], 'groups': [], 'visibility': 'private', 'deletedTime': None, 'subdocs': [{'page_content': 'jump to content\nMY SUBREDDITS\n\t\t\t\tPOPULAR-ALL-RANDOM-USERS\xa0|\xa0ASKREDDIT-PICS-GAMING-FUNNY-MOVIES-MILDLYINTERESTING-WORLDNEWS-DATAISBEAUTIFUL-DIY-NEWS-EXPLAINLIKEIMFIVE-TODAYILEARNED-OLDSCHOOLCOOL-VIDEOS-NOTTHEONION-BOOKS-TIFU-SHOWERTHOUGHTS-TWOXCHROMOSOMES-AWW-FUTUROLOGY-MUSIC-JOKES-LIFEPROTIPS-ASKSCIENCE-SCIENCE-IAMA-SPACE-GADGETS-SPORTS-UPLIFTINGNEWS-FOOD-NOSLEEP-HISTORY-GIFS-INTERNETISBEAUTIFUL-GETMOTIVATED-WRITINGPROMPTS-ANNOUNCEMENTS-PHILOSOPHY-DOCUMENTARIES-EARTHPORN-CREEPY-PHOTOSHOPBATTLES-LISTENTOTHIS-BLOG\nMORE »\n\t\treddit.com\xa0hotnewrisingcontroversialtopwiki\n\t\tWant to join?\xa0Log in\xa0or\xa0sign up\xa0in seconds.|English\n\n\nremember mereset password\nlogin\n\n\nSubmit a new link\n\nSubmit a new text post\n\n\nGet an ad-free experience with special benefits, and directly support Reddit.\nGet Reddit Premium\n\nWelcome to Reddit.\nCome for the cats, stay for the empathy.\nBECOME A REDDITOR\nand start exploring.\n×\npopular in:\xa0Canada\n\n1\n\n7792\n\n\nWhat was the “…seriously?” gift you opened this Christmas?\xa0(self.AskReddit)\nsubmitted\xa011 hours ago\xa0by\xa0Leading_War_5847\xa0to\xa0r/AskReddit\n\t\t10166 commentssharesavehidereport\n\n\n\n\n\n2\n\n•\n\n\n[Post Game Thread] The Brooklyn Nets (15-15) defeat the Detroit Pistons (2-28), 118 - 112 behind 21/4/3 from Mikal Bridges as the Pistons break the record for the most consecutive losses by a team in a single seasonPost Game Thread\xa0(self.nba)\n\nsubmitted\xa0an hour ago\xa0*\xa0by\xa0UnbiasedNBAFan_[🍰]\xa0to\xa0r/nba\n\t\t821 commentssharesavehidereport\n\n\n\n\n3\n\n2937\n\n\n[Serious] What\'s the scariest fact you wish you didn\'t know?Serious Replies Only\xa0(self.AskReddit)\nsubmitted\xa09 hours ago\xa0by\xa0Msjann\xa0to\xa0r/AskReddit\n\t\t3188 commentssharesavehidereport\n\n\n\n\n4\n\n44.4k\n\n￼\nA daughter wrote a brutal "rot in hell" kind of obituary about her mom in a newspaper in Michigan.\xa0(i.redd.it)\n\nsubmitted\xa08 hours ago\xa0by\xa0Lifegoesonforever\xa0to\xa0r/pics\n\t\t2153 commentssharesavehidereport\n\n\n\n\n5\n\n8455\n\n￼\n"Calling Eminem the greatest at rap is white supremacy"\xa0🇲 🇮 🇸 🇨 \xa0(i.redd.it)\n\nsubmitted\xa04 hours ago\xa0by\xa0Visqo\xa0to\xa0r/facepalm\n\t\t2302 commentssharesavehidereport\n\n\n\n\n6\n\n342\n\n￼\nCanadians aren’t actually that interested in the economy, and that’s a problemOpinion Piece\xa0(theglobeandmail.com)\nsubmitted\xa04 hours ago\xa0by\xa0joe4942\xa0to\xa0r/canada\n\t\t299 commentssharesavehidereport\n\n\n\n\n7\n\n859\n\n￼\nWell this is the most accurate map legend everMeme\xa0(i.redd.it)\n\nsubmitted\xa02 hours ago\xa0by\xa0Alternative-Pay6464\xa0to\xa0r/nhl\n\t\t97 commentssharesavehidereport\n\n\n\n\n8\n\n4982\n\n￼\nWoman with 6 kids upset at this year’s haul\xa0(i.redd.it)\n\nsubmitted\xa08 hours ago\xa0by\xa0adelltfm\xa0to\xa0r/ChoosingBeggars\n\t\t1452 commentssharesavehidereport\n\n\n\n\n9\n\n•\n\n￼\n\'Parasite\' actor Lee Sun-kyun found dead amid investigation over drug allegationsNews\xa0(koreatimes.co.kr)\nsubmitted\xa0an hour ago\xa0by\xa0mcfw31\xa0to\xa0r/movies\n\t\t155 commentssharesavehidereport\n\n\n\n\n10\n\n11.7k\n\n￼\nTIL on 9/11/01 a guest at the Marriott World Trade Center hotel, located at the base of the towers, awoke to the first plane crashing but went back to bed. He then got up, turned on the news, took a shower, packed his things, and only decided to evacuate when the South Tower collapsed onto the hotel\xa0(voanews.com)\nsubmitted\xa05 hours ago\xa0by\xa0minerman30\xa0to\xa0r/todayilearned\n\t\t334 commentssharesavehidereport', 'metadata': {'cid': '659a54a5d9569e7b627dea93', 'did': '659a54a5d9569e7b627dea93', 'index': 0, 'wid': 'test'}, 'score': 0.0}]}]}], 'output_groups': None, 'total_cost': 0.0}
 
 

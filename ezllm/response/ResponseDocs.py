@@ -1,11 +1,11 @@
 from typing import Generic, List, TypeVar
 from ezllm.Documents import Document
+from ezllm.SubDoc import SearchSubDocs, SubDocs, SubDoc
 
 
 R = TypeVar('R', bound='ResponseDoc')
 
 class ResponseDoc(Document):
-    from ezllm.SubDoc import SearchSubDocs, SubDocs, SubDoc
 
     subdocs: SubDocs[SubDoc]
     SubDocsClass = SubDocs[SubDoc]
@@ -27,7 +27,6 @@ class ResponseDoc(Document):
 {" " * indent})"""
 
 class SearchResponseDoc(ResponseDoc):
-    from ezllm.SubDoc import SearchSubDocs, SubDocs
     subdocs: SearchSubDocs
     SubDocsClass = SearchSubDocs
 

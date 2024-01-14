@@ -1,7 +1,7 @@
 from ezllm.response import ExtractionMethodResponse
 from ezllm.response.methods.ExtractionResponse import ExtractionOutputGroup
 from ezllm.response import SearchResponse, ScanResponse, FilterResponse, QAMethodResponse, ResponseDoc
-from tests.data.response import EXTRACTION_RESPONSE_DATA, FILTER_RESPONSE_DATA, QA_RESPONSE_DATA, SCAN_RESPONSE_DATA, SEARCH_RESPONSE_DATA
+from tests.data.response import EXTRACTION_RESPONSE_DATA, FILTER_RESPONSE_DATA, QA_INCLUDE_DOCS_RESPONSE_DATA, QA_RESPONSE_DATA, SCAN_RESPONSE_DATA, SEARCH_RESPONSE_DATA
 import pandas as pd
 
 def test_extraction_response():
@@ -35,6 +35,10 @@ def test_qa_response():
     doc = response.data[0]
     o = response.output.by_id("658b4e441f41ead7592562de")
 
+    for question in response.data:
+        assert type(question.question) == str
+        assert type(question.answer) == str
+        assert type(question.relevant) == int
 
     for group in response.output:
         d = group.data
@@ -52,6 +56,32 @@ def test_qa_response():
 
     assert o.id == '658b4e441f41ead7592562de'
     assert response.data[0]['question'] == 'Who are the authors?'
+
+def test_qa_include_docs_response():
+    response = QAMethodResponse(QA_INCLUDE_DOCS_RESPONSE_DATA)
+    print(response)
+    question_data = response.data[0]
+    print()
+    o = response.output.by_id("658b4e441f41ead7592562de")
+
+
+    for group in response.output:
+        d = group.data
+        assert type(group.id) == str
+        assert type(group.type) == str
+        for question in group.questions:
+            assert type(question.question) == str
+            assert type(question.answer) == str
+            assert type(question.relevant) == int
+
+        for question in group.data:
+            assert type(question['question']) == str
+            assert type(question['answer']) == str
+            assert type(question['relevant']) == int
+
+    assert o.id == '658b4e441f41ead7592562de'
+    assert response.data[0]['question'] == 'Who are the authors?'
+
 
 
 def test_filter_response():
@@ -72,6 +102,7 @@ def test_filter_response():
 
 def test_scan_response():
     response = ScanResponse(SCAN_RESPONSE_DATA)
+    print(response)
     response.docs
     for doc in response.docs:
         assert type(doc) == ResponseDoc

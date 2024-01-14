@@ -13,8 +13,10 @@ TODO
 def test_filter_document():
     doc = Document(TEST_DOC_ID)
     output = doc.filter()
+    print("OUTPUT", output)
     filter_data = output.get()
     docs = filter_data.docs
+    print("OUTPUT", output)
 
     g = filter_data.doc_groups.groups[0]
     g # OutputGroup

@@ -1,4 +1,8 @@
 from __future__ import annotations
+from dotenv import find_dotenv, load_dotenv
+load_dotenv(find_dotenv(usecwd=True))
+print("SDK", find_dotenv(usecwd=True))
+
 from io import BufferedReader
 from typing import Optional
 
@@ -11,6 +15,7 @@ from .Search import SearchRetrieval
 from .Collections import Collections
 from .methods import *
 from .types import *
+
 
 def upload(
     file: Optional[BufferedReader] = None,

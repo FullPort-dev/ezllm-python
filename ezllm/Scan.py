@@ -26,7 +26,7 @@ class ScanRetrieval(RetrievalBase[ScanResponse]):
     @property
     def docs(self) -> List[ResponseDoc]:
         self.get_cache()
-        return self.output.docs
+        return self._output.docs
     
     def json(self):
         return {

@@ -194,10 +194,10 @@ EZLLM_RUN_URL = https://run.ezllm.io # optional
 ```bash
 pip show ezllm
 
-# to build
+# 1. Build
 python3 setup.py sdist bdist_wheel
 
-# Install
+2. # Install
 ## local
 pip3 install --upgrade dist/ezllm-0.1-py3-none-any.whl
 
@@ -207,14 +207,13 @@ pip3 install --index-url https://test.pypi.org/simple/ ezllm
 ## pypi
 pip3 install ezllm
 
-# Uninstall
-pip3 uninstall ezllm
+## Uninstall (necessary to test each version)
+pip3 uninstall ezllm 
 
-# Upload
+3. # Upload
 ## test-pypi
 python3 -m twine upload --repository testpypi dist/*
 
-
-
 ## pypi
+python3 -m twine upload dist/*
 ```

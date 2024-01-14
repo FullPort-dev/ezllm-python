@@ -1,10 +1,8 @@
 import os
-from dotenv import load_dotenv
 import requests
 
 from ezllm.constants import DEFAULT_API_URL, DEFAULT_RUN_URL
 
-load_dotenv()
 
 class SingletonMeta(type):
     # first client created, if key = None it returns this
@@ -39,7 +37,8 @@ class Client(metaclass=SingletonMeta):
         self.api_url = api_url or os.getenv('EZLLM_API_URL') or DEFAULT_API_URL
         self.run_url = run_url or os.getenv('EZLLM_RUN_URL') or DEFAULT_RUN_URL
         # print('INIT CLIENT', self.key, self.secret, self.api_url, self.run_url)
-        
+        if self.key == None or self.secret == None:
+            raise Exception("Please Provide a key and secret by passing it to Client() or adding to a .env https://docs.ezllm.io/quickstart")
         self.headers = {
             # "Content-Type": "application/json",
             'X-Access-Key' : self.key,
@@ -53,7 +52,9 @@ class Client(metaclass=SingletonMeta):
             self.wid = self.loaded_data['workspaces'][0]['wid']
             self.workspace_api_url = f'{self.api_url}/w/{self.wid}'
             self.workspace_run_url = f'{self.run_url}/w/{self.wid}'
-        
+        else:
+            print("[ERROR] loading workspace data")
+            # raise Exception("Error loading workspace")
 
         
     def load(self):
@@ -86,7 +87,18 @@ class Client(metaclass=SingletonMeta):
         from .Collections import Collections
         return Collections(client=self)
     
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)    
 
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent+4)
+
+        return f"""\
+{self.__class__.__name__}(
+{ind}key={self.key}
+{ind}key={self.api_url}
+{ind}key={self.run_url}
+{" " * (indent)})"""
 
 def get_default_client():
     return Client()

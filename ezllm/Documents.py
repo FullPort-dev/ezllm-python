@@ -67,8 +67,8 @@ class Document(Generic[S]):
             data = response.json()
             self.data = data
 
-            # TODO should this return self?
-            return Document.from_data(data, self.client)
+            # TODO should this return self or a new instance?
+            return self
         else:
             print("ERROR FETCHING DOCUMENT", response.status_code)
             raise NotFound("Document")
@@ -85,27 +85,6 @@ class Document(Generic[S]):
 
         from .Filter import Filter
         return Filter(documents=[self], metadata=metadata)
-
-    @overload
-    def run(
-        self,
-        method: 'ExtractionMethod' = None,
-        group: GroupTypes = 'all',
-    ) -> 'ExtractionMethodResponse': ...
-
-    @overload
-    def run(
-        self,
-        method: 'QAMethod' = None,
-        group: GroupTypes = 'all',
-    ) -> 'QAMethodResponse': ...
-        
-    def run(
-            self,
-            method: 'MethodBase' = None,
-            group: GroupTypes = 'all',
-        ):
-        return self.scan(group).run(method)
 
     def search(
             self,
@@ -134,8 +113,31 @@ class Document(Generic[S]):
         )
     
 
-    def delete(self):
+    @overload
+    def run(
+            self,
+            method: 'ExtractionMethod' = None,
+            group: GroupTypes = 'all',
+            include_docs: bool = False,
+        ) -> 'ExtractionMethodResponse': ...
 
+    @overload
+    def run(
+            self,
+            method: 'QAMethod' = None,
+            group: GroupTypes = 'all',
+            include_docs: bool = False,
+        ) -> 'QAMethodResponse': ...
+        
+    def run(
+            self,
+            method: 'MethodBase' = None,
+            group: GroupTypes = 'all',
+            include_docs: bool = False,
+        ):
+        return self.scan(group).run(method, include_docs=include_docs)
+
+    def delete(self):
         headers = {
             "Content-Type": "application/json",
             **self.client.headers  

@@ -22,6 +22,8 @@ class Filter:
         self.metadata = metadata
         self.client = client or Client()
         self.data = None
+        self._output = None
+        
 
     def get_ids(self, list):
         out = []
@@ -90,8 +92,8 @@ class Filter:
         if response.status_code == 200:
             data= response.json()
             self.data = data
-            self.output = FilterResponse(data)
-            return self.output
+            self._output = FilterResponse(data)
+            return self._output
         
         else:
             print("Error: ", response.status_code)
@@ -106,4 +108,22 @@ class Filter:
     @property
     def docs(self) -> List[ResponseDoc]:
         self.get_cache()
-        return self.output.docs
+        return self._output.docs
+    
+    @property
+    def output(self) -> FilterResponse:
+        self.get_cache()
+        return self._output
+
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)
+    
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent+4)
+
+        # TODO : serialize json nicer
+        return f"""\
+{self.__class__.__name__}(
+{ind}output={self._output.__repr_nested__(indent+4) if self.output else None}
+{ind}filter={json.dumps(self.json()['filter'], indent=indent+8)}
+{" " * (indent)})"""

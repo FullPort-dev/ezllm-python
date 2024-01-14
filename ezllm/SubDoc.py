@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Generic, List, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, Generic, List, TypeVar
 
 import requests
 
@@ -11,11 +11,12 @@ S = TypeVar('S', bound='SubDoc')
 class SubDoc:
     def __init__(self, data):
         self._data = data
-        self.content = data.get('page_content')
-        self.metadata = data.get('metadata')
-        _metadata = data.get('metadata', {})
-        self.index = _metadata.get('index')
-        self.page = _metadata.get('page')
+        self.content: str = data.get('page_content')
+        self.metadata: Dict = data.get('metadata')
+        _metadata: Dict = data.get('metadata', {})
+        self.index: int = _metadata.get('index')
+        self.page: int = _metadata.get('page')
+        self.id: str = _metadata.get('id')
 
         # TODO how to access .page (PDF specific metadata)
         # I'm just going to export all of them
@@ -26,17 +27,19 @@ class SubDoc:
         return self.__repr_nested__(indent=0)
 
     def __repr_nested__(self, indent=0):
-        ind = ' ' * indent
+        ind = ' ' * (indent+4)
+        content_ind = ' ' * (indent + 8)
+        content = f'\n{content_ind}'.join(self.content[0:500].splitlines())
+
         return f"""\
 {self.__class__.__name__}(
-{ind}content=\"\"\"
-{self.content[0:500]}
-
-{"(MORE CONTENT ...)" if len(self.content) > 500 else ""}
-\"\"\"
+{ind}index={self.index}
 {ind}metadata={self.metadata}
-{ind}]
-{" " * (indent-4)})"""
+{ind}content=\"\"\"
+{content_ind}{content}
+{content_ind}{"(MORE CONTENT ...)" if len(self.content) > 500 else ""}
+{ind}\"\"\"
+{" " * (indent)})"""
 
 class SearchSubDoc(SubDoc):
     def __init__(self, data):
@@ -47,18 +50,20 @@ class SearchSubDoc(SubDoc):
         return self.__repr_nested__(indent=0)
     
     def __repr_nested__(self, indent=0):
-        ind = ' ' * indent
+        ind = ' ' * (indent+4)
+        content_ind = ' ' * (indent + 8)
+        content = f'\n{content_ind}'.join(self.content[0:500].splitlines())
+
         return f"""\
 {self.__class__.__name__}(
-score={self.score}
-{ind}content=\"\"\"
-{self.content[0:500]}
-
-{"(MORE CONTENT ...)" if len(self.content) > 500 else ""}
-\"\"\"
+{ind}score={self.score}
+{ind}index={self.index}
 {ind}metadata={self.metadata}
-{ind}]
-{" " * (indent-4)})"""
+{ind}content=\"\"\"
+{content_ind}{content}
+{content_ind}{"(MORE CONTENT ...)" if len(self.content) > 500 else ""}
+{ind}\"\"\"
+{" " * (indent)})"""
 
 class SubDocs(Generic[S]):
     SubDocClass: S = SubDoc
@@ -76,7 +81,6 @@ class SubDocs(Generic[S]):
         return f'{self.doc.url}/subdocs'
     
     def get(self):
-        print(self.url)
         response = requests.get(
             self.url,
             headers=self.doc.client.headers,
@@ -84,7 +88,7 @@ class SubDocs(Generic[S]):
         if response.status_code == 200:
             # TODO format this into a Document
             data = response.json()
-            self._subdocs = data
+            self._subdocs = [self.SubDocClass(x) for x in data]
 
             return self
         else:
@@ -116,7 +120,7 @@ class SubDocs(Generic[S]):
 
     def __repr_nested__(self, indent=0):
         ind = ' ' * (indent+4)
-        nested_repr = (' ' * (indent + 8)) + ("\n" + (' ' * (indent+8))).join([repr(obj) for obj in self.subdocs])
+        nested_repr = (' ' * (indent + 8)) + ("\n" + (' ' * (indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.subdocs])
 
         return f"""\
 {self.__class__.__name__}(

@@ -6,6 +6,7 @@ from ezllm.response.OutputGroup import OutputData, OutputGroups
 D = TypeVar('D', bound='OutputData')
 
 class DocOutputGroup(Generic[D]):
+    _data: D
     OutputDataClass: D = ResponseDocs[ResponseDoc]
 
     def __init__(self, group):
@@ -16,6 +17,10 @@ class DocOutputGroup(Generic[D]):
     @property
     def data(self) -> List[ResponseDoc]:
         return self._data.data
+    
+    @property
+    def docs(self) -> ResponseDocs:
+        return self._data
 
     def __repr__(self):
         return self.__repr_nested__(indent=0)
@@ -32,12 +37,21 @@ class DocOutputGroup(Generic[D]):
     
     
 class SearchDocOutputGroup(DocOutputGroup[SearchResponseDoc]):
+    docs: SearchResponseDocs
     OutputDataClass: D = SearchResponseDocs
 
 
 class DocOutputGroups(OutputGroups[DocOutputGroup[ResponseDocs[ResponseDoc]]]):
     OutputGroupClass = DocOutputGroup[ResponseDocs[ResponseDoc]]
+
+    @property
+    def docs(self) -> ResponseDocs:
+        return ResponseDocs(docs=self.data)
+
             
 class SearchDocOutputGroups(OutputGroups[SearchDocOutputGroup]):
     OutputGroupClass = SearchDocOutputGroup
-    
+
+    @property
+    def docs(self) -> ResponseDocs:
+        return ResponseDocs(docs=self.data)

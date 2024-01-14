@@ -6,7 +6,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         # list your package dependencies here
-        'requests'
+        'requests',
+        'python-dotenv'
     ],
     extras_require={
         'extra' : ['pandas']
