@@ -46,11 +46,15 @@ class Documents(Entity):
     
     def __repr_nested__(self, indent=0):
         ind = ' ' * (indent+4)
-        nested_repr = (' ' * (indent+8)) + ("\n" + (' ' * (indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.docs])
 
-        return f"""\
+        if indent < 8:
+            nested_ind = ' ' * (indent+8)
+            nested_repr = f'[\n{nested_ind}{(nested_ind).join([obj.__repr_nested__(indent+8) for obj in self.docs])}\n{ind}]'
+            return f"""\
 {self.__class__.__name__}(
-{ind}docs=[
-{nested_repr}
-{ind}]
+{ind}docs={nested_repr}
 {" " * (indent)})"""
+        
+        else:
+            nested_repr = f'{ind}Documents()'
+            return f'Documents(...)'

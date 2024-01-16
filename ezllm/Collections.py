@@ -14,7 +14,6 @@ class Collections(Entity):
 
     def format_data(self):
         for i in self.data:
-            print(i)
             self._collections.append(Collection.from_data(data=i, client=self.client))
 
     @property
@@ -47,5 +46,7 @@ class Collections(Entity):
 
         return f"""\
 {self.__class__.__name__}(
-{ind}collections={nested_repr}
+{ind}collections=[
+{nested_repr}
+]
 {" " * (indent)})"""

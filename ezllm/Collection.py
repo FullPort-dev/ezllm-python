@@ -249,5 +249,4 @@ class Collection(Entity):
 {ind}id={self.id}
 {ind}name={self.name}
 {ind}docs={self.docs.__repr_nested__(indent+4)}
-{ind}]
 {" " * (indent)})"""

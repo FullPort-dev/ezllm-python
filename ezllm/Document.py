@@ -142,12 +142,16 @@ class Document(Generic[S], Entity):
 
     def __repr_nested__(self, indent=0):
         ind = ' ' * (indent+4)
-
+        nested_ind = ' ' * (indent+8)
+        
+        if indent < 8:
+            subdocs_repr = f"[\n{nested_ind}{self.subdocs.__repr_nested__(indent+4)}\n{nested_ind}]"
+        else:
+            subdocs_repr = 'SubDocs(...)'
         return f"""\
 {self.__class__.__name__}(
 {ind}id={self.id}
 {ind}name={self.name}
 {ind}state={self.state}
-{ind}subdocs={self.subdocs.__repr_nested__(indent+4)}
+{ind}subdocs={subdocs_repr}
 {" " * (indent)})"""
-    
