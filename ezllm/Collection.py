@@ -1,7 +1,9 @@
 from enum import Enum
 from io import BufferedReader
 from typing import TYPE_CHECKING, Any, List, Optional, overload
-from ezllm.Documents import Document
+from ezllm.Documents import Documents
+from ezllm.Document import Document
+from ezllm.Entity import Entity
 from ezllm.errors import NotFound
 from ezllm.types import GroupTypes
 from .Client import Client
@@ -19,23 +21,24 @@ class FileTypes(Enum):
     csv='csv'
     txt='txt'
 
-class Collection():
+class Collection(Entity):
     def __init__(
             self,
             id=None,
+            client:Client=None,
+            data = None,
             name=None,
-            client:Client=None
         ):
+        super().__init__(id=id, data=data, client=client)
         self._name = name
-        self._id = id
-        self.client = client or Client()
-        self.data = None
+        self.docs = Documents(self, client=self.client)
+        
     
     
     @classmethod
     def create(cls, name, client: Client = None):
         client = client or Client()
-        url = f'{client.workspace_api_url}/c/'
+        url = f'{client.workspace_api_url}/c'
         data = {
                 # "id": "string",
                 "name": name,
@@ -52,13 +55,7 @@ class Collection():
             data=json.dumps(data)
         )
         res_json = res.json()
-        return Collection(
-            id=res_json['_id'],
-            name=res_json['name'],
-            client=client,
-        )
-    
-    
+        return cls.from_data(data=res_json, client=client)
     
     def update(self, name=None):
         if name == None:
@@ -75,7 +72,7 @@ class Collection():
             headers=headers,
             data=json.dumps(data)
         )
-        self.data = res.json()
+        self._data = res.json()
         return self
     
         
@@ -89,7 +86,7 @@ class Collection():
             self.url,
             headers=headers,
         )
-        self.data = res.json()
+        self._data = res.json()
         return self
         
     
@@ -153,9 +150,10 @@ class Collection():
 
 
     def get(self):
+        self.load_state = 'loading'
         if self._id is not None:
             response = requests.get(
-                f'{self.client.workspace_api_url}/c/{self._id}',
+                self.url,
                 headers=self.client.headers,
             )
         elif self._name is not None:
@@ -166,17 +164,13 @@ class Collection():
 
         if response.status_code == 200:
             data = response.json()
-            self.data = data
+            self._data = data
             self._id = data['_id']
+            self.load_state = 'loaded'
             return self
         else:
+            self.load_state = 'error'
             raise NotFound("Collection")
-
-    def get_cache(self):
-        if self.data == None:
-            self.get()
-        
-        return self.data
 
     @property
     def url(self):
@@ -217,7 +211,7 @@ class Collection():
             files={'file' : (f'{file_name}', file, mimetype)},
         )
         
-        doc = Document(data=response.json())
+        doc = Document.from_data(response.json())
         
 
         if await_processed:
@@ -225,8 +219,8 @@ class Collection():
             
         return doc
     
-    def document(self,id):
-        from .Documents import Document
+    def document(self, id: str):
+        from .Document import Document
         return Document(
             id=id,
             cid=self.id,
@@ -238,17 +232,22 @@ class Collection():
     def name(self) -> str:
         if self._name:
             return self._name
-        data = self.get_cache()
-        return data['name']
-    
-    @property
-    def id(self) -> str:
-        if self._id:
-            return self._id
-        data = self.get_cache()
-        return data['_id']
+        return self.data['name']
     
     @property
     def state(self) -> str:
-        data = self.get_cache()
-        return data['state']
+        return self.data['state']
+    
+    def __repr__(self):
+        return self.__repr_nested__(indent=0)    
+
+    def __repr_nested__(self, indent=0):
+        ind = ' ' * (indent+4)
+
+        return f"""\
+{self.__class__.__name__}(
+{ind}id={self.id}
+{ind}name={self.name}
+{ind}docs={self.docs.__repr_nested__(indent+4)}
+{ind}]
+{" " * (indent)})"""

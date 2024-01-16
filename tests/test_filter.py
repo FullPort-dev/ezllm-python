@@ -1,5 +1,5 @@
 import ezllm
-from ezllm.Documents import Document
+from ezllm.Document import Document
 from tests.constants import TEST_COL_ID, TEST_DOC_ID
 
 """

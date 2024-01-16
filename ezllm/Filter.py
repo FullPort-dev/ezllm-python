@@ -1,5 +1,5 @@
 from ezllm.types import GroupTypes
-from .Documents import Document
+from .Document import Document
 from .Collection import Collection
 from .Client import Client
 from ezllm.response import FilterResponse, ResponseDoc

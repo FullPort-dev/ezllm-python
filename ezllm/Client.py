@@ -14,6 +14,9 @@ class SingletonMeta(type):
         if len(args) > 0:
             key = args[0]
         
+        if key == None and cls._default != None:
+            return cls._default
+
         if key not in cls._instances:
             client = super(SingletonMeta, cls).__call__(*args, **kwargs)
             if len(cls._instances) == 0:
@@ -83,7 +86,8 @@ class Client(metaclass=SingletonMeta):
         from .Collection import Collection
         return Collection(id,client=self)
     
-    def Collections(self):
+    @property
+    def collections(self):
         from .Collections import Collections
         return Collections(client=self)
     

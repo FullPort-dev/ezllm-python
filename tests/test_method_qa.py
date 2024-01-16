@@ -1,4 +1,4 @@
-from ezllm.Documents import Document
+from ezllm.Document import Document
 from ezllm.methods import QAMethod
 from tests.constants import TEST_DOC_ID
 

@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from ezllm.Documents import Document
+from ezllm.Document import Document
 from ezllm.methods import ExtractionMethod
 from tests.constants import TEST_DOC_ID
 from pydantic import BaseModel, Field

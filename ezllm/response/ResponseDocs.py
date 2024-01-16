@@ -1,5 +1,5 @@
 from typing import Generic, List, TypeVar
-from ezllm.Documents import Document
+from ezllm.Document import Document
 from ezllm.SubDoc import SearchSubDocs, SubDocs, SubDoc
 
 
@@ -14,17 +14,6 @@ class ResponseDoc(Document):
             data=doc
         )
 
-    def __repr__(self):
-        return self.__repr_nested__(indent=0)
-
-    def __repr_nested__(self, indent=0):
-        ind = ' ' * (indent + 4)
-
-        return f"""\
-{self.__class__.__name__}(
-{ind}name={self.name}
-{ind}SubDocs={len(self.subdocs)}
-{" " * indent})"""
 
 class SearchResponseDoc(ResponseDoc):
     subdocs: SearchSubDocs

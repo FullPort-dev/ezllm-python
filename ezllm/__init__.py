@@ -1,7 +1,6 @@
 from __future__ import annotations
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv(usecwd=True))
-print("SDK", find_dotenv(usecwd=True))
 
 from io import BufferedReader
 from typing import Optional
@@ -9,7 +8,8 @@ from typing import Optional
 # from ezllm.Workspace import Workspace
 from .Client import Client
 from .Collection import Collection, FileTypes
-from .Documents import  Document
+from .Document import  Document
+from .Documents import  Documents
 from .Filter import Filter
 from .Search import SearchRetrieval
 from .Collections import Collections

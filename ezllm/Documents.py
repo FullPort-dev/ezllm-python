@@ -1,198 +1,56 @@
-import time
-from typing import TYPE_CHECKING, Generic, TypeVar, overload
-
-from ezllm.SubDoc import SubDocs
-from ezllm.constants import UPLOAD_TIMEOUT
-
-if TYPE_CHECKING:
-    from ezllm.methods.Base import MethodBase
-    from ezllm.methods import ExtractionMethod, QAMethod
-    from ezllm.response import ExtractionMethodResponse, QAMethodResponse
+from typing import TYPE_CHECKING
 
 import requests
-from ezllm.types import DocumentStateTypes, GroupTypes, MetadataFilterType
+from ezllm import Client, Document
+from ezllm.Entity import Entity
+from ezllm.errors import NotFound
+from ezllm.Document import Document
+from ezllm.helpers import with_cache
+if TYPE_CHECKING:
+    from ezllm import Collection
 
-from ezllm.errors import FileProcessingError, NotFound
-from .Client import Client
-
-S = TypeVar('S', bound=SubDocs)
-
-class Document(Generic[S]):
-    subdocs: S
-    SubDocsClass: S = SubDocs
-    def __init__(
-            self,
-            id = None,
-            client:Client = None,
-            cid = None,
-            data = None,
-        ):
-        
+class Documents(Entity):
+    def __init__(self, collection: 'Collection', data=None, client: Client = None):
+        super().__init__(id=None, data=data, client=client)
+        self._docs = []
+        self.collection = collection
         self.client = client or Client()
-        self.data = data or {}
-        self._id = id or self.data.get('_id')
-        self._cid = cid or self.data.get('cid')
-        self.subdocs = self.SubDocsClass(self, self.data.get('subdocs', []))
-        
-        
-    def get_state(self) -> DocumentStateTypes:
-        res = requests.get(
-            f'{self.url}/state',
-            headers=self.client.headers,
-        )
-        state = res.json()
-        self.data['state'] = state
-        return state
 
-    @classmethod
-    def from_data(cls, data, client = None):
-        return Document(
-            data['_id'],
-            client=client,
-            cid=data['cid'],
-            data=data,
-        )
     
     @property
     def url(self):
-        return f'{self.client.workspace_api_url}/d/{self._id}'
-    
-    def get(self):
-        response = requests.get(
-            self.url,
-            headers=self.client.headers,
-        )
-        if response.status_code == 200:
-            # TODO format this into a Document
-            data = response.json()
-            self.data = data
+        return f"{self.collection.url}/d"
 
-            # TODO should this return self or a new instance?
-            return self
-        else:
-            print("ERROR FETCHING DOCUMENT", response.status_code)
-            raise NotFound("Document")
-
-    def get_cache(self):
-        if len(self.data) == 0:
-            self.get()
-        
-        return self.data
-
-    def filter(self,
-            metadata: 'MetadataFilterType' = {}
-        ):
-
-        from .Filter import Filter
-        return Filter(documents=[self], metadata=metadata)
-
-    def search(
-            self,
-            query,
-            group: GroupTypes = 'all',
-            n_docs = 10
-        ):
-        from .Search import SearchRetrieval
-        return SearchRetrieval(
-            client=self.client,
-            query=query,
-            n_docs=n_docs,
-            filter=self.filter(),
-            group=group
-        )
-
-    def scan(
-            self,
-            group: GroupTypes = 'all',
-        ):
-        from .Scan import ScanRetrieval
-        return ScanRetrieval(
-            client=self.client,
-            group=group,
-            filter=self.filter()
-        )
-    
-
-    @overload
-    def run(
-            self,
-            method: 'ExtractionMethod' = None,
-            group: GroupTypes = 'all',
-            include_docs: bool = False,
-        ) -> 'ExtractionMethodResponse': ...
-
-    @overload
-    def run(
-            self,
-            method: 'QAMethod' = None,
-            group: GroupTypes = 'all',
-            include_docs: bool = False,
-        ) -> 'QAMethodResponse': ...
-        
-    def run(
-            self,
-            method: 'MethodBase' = None,
-            group: GroupTypes = 'all',
-            include_docs: bool = False,
-        ):
-        return self.scan(group).run(method, include_docs=include_docs)
-
-    def delete(self):
-        headers = {
-            "Content-Type": "application/json",
-            **self.client.headers  
-        }
-        res = requests.delete(
-            self.url,
-            headers=headers,
-        )
-        self.data = res.json()
-        return self
-
-    def await_processed(self):
-        MAX_POLLING_INTERVAL = 10
-        interval = 1
-        start = time.time()
-        while True:
-            if time.time() - start > UPLOAD_TIMEOUT:
-                raise TimeoutError("Polling timed out")
-            time.sleep(interval)
-            state = self.get_state()
-            interval = min(interval*2, MAX_POLLING_INTERVAL)
-
-            if state == 'active':
-                break
-            if state == 'error':
-                raise FileProcessingError()
+    def format_data(self):
+        self._docs = [Document.from_data(d) for d in self._data]
 
     @property
-    def name(self) -> str:
-        data = self.get_cache()
-        return data['name']
-    
-    @property
-    def id(self) -> str:
-        if self._id:
-            return self._id
-        data = self.get_cache()
-        return data['_id']
-    
-    @property
-    def state(self) -> str:
-        data = self.get_cache()
-        return data['state']
+    @with_cache
+    def docs(self):
+        return self._docs
 
+    def __len__(self):
+        return len(self.docs)
 
+    def __getitem__(self, index) -> Document:
+        return self.docs[index]
+
+    def __reversed__(self):
+        return reversed(self.docs)
+    
+    def __iter__(self):
+        return iter(self.docs)
+    
     def __repr__(self):
-        return self.__repr_nested__(indent=0)    
-
+        return self.__repr_nested__(indent=0)
+    
     def __repr_nested__(self, indent=0):
         ind = ' ' * (indent+4)
+        nested_repr = (' ' * (indent+8)) + ("\n" + (' ' * (indent+8))).join([obj.__repr_nested__(indent+8) for obj in self.docs])
 
         return f"""\
 {self.__class__.__name__}(
-{ind}id={self.id}
-{ind}name={self.name}
-{ind}state={self.state}
-{ind}subdocs={self.subdocs.__repr_nested__(indent+4)}
+{ind}docs=[
+{nested_repr}
+{ind}]
 {" " * (indent)})"""

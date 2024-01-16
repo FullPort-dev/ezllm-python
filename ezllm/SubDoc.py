@@ -4,7 +4,7 @@ import requests
 
 from ezllm.errors import NotFound
 if TYPE_CHECKING:
-    from ezllm.Documents import Document
+    from ezllm.Document import Document
 
 S = TypeVar('S', bound='SubDoc')
 
