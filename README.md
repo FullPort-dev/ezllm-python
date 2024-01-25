@@ -183,8 +183,7 @@ tests are located in the /test directory and can be a good resource for understa
 
 to run tests, you need to provide a .env file with the following values.
 ```bash
-EZLLM_ACCESS_KEY = access_key
-EZLLM_SECRET = secret
+EZLLM_API_KEY = api_key
 EZLLM_API_URL = https://api.ezllm.io # optional
 EZLLM_RUN_URL = https://run.ezllm.io # optional
 ```

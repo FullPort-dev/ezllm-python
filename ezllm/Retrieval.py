@@ -35,7 +35,7 @@ class RetrievalBase(Generic[T]):
     @overload
     def run(
             self,
-            method:ExtractionMethod,
+            method: ExtractionMethod,
             include_docs: bool = False
         ) -> ExtractionMethodResponse: ... 
 
@@ -50,6 +50,7 @@ class RetrievalBase(Generic[T]):
             **method.json(),
         }
         body = json.dumps(data, indent=4)
+        # print(body)
         res = requests.post(f'{self.client.workspace_run_url}/run', data=body, headers=self.client.headers)
         output = res.json()
 

@@ -12,6 +12,8 @@ MetadataFilterType = Dict[str, Any]
 
 
 GroupTypes = Literal['all', 'collection', 'document']
+AggTypes = Literal['all', 'collection', 'document', 'accumulate']
+LLMTypes = Literal['gpt-4', 'gpt-3.5', 'gpt-3.5-turbo-1106']
 
 
 
@@ -21,3 +23,4 @@ class DocumentStateTypes(Enum):
     active = 'active'
     error = 'error'
     deleted = 'deleted'
+

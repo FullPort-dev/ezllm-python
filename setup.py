@@ -13,7 +13,7 @@ setup(
     extras_require={
         'extra' : ['pandas']
     },
-    description="Enhance your data pipelines with the power of Large Language Models. EzLLM is a developer tool that opens the door to the LLM ecosystem. Automatic webscrapers, natural language data extraction, semantic search and as little as 3 lines of code",
+    description="Enhance your data pipelines with the power of Large Language Models. EzLLM is a developer tool that opens the door to the LLM ecosystem. Automatic webscrapers, natural language data extraction, semantic search in as little as 3 lines of code",
     author="EzLLM",
     author_email="info@fullport.dev",
     url='https://github.com/FullPort-dev/ezllm-python',

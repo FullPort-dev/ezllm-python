@@ -9,6 +9,7 @@ def test_search_document():
     output = search_retrieval.get()
     # output is SearchResponse because of the .get()
     docs = output.docs
+    print(search_retrieval)
     assert len(docs) == 1
 
 

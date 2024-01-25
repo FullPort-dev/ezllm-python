@@ -1,4 +1,6 @@
+import math
 import os
+import random
 from ezllm import Client, Collection, Document
 from .constants import TEST_COL_ID, TEST_DOC_ID
 
@@ -38,6 +40,13 @@ def test_init_collection_no_kwarg():
     
     assert collection.docs.state == 'loaded'
 
+
+def test_init_new_collection():
+    name = f"ABC{random.randint(0, 10000000)}"
+    collection = Collection(name=name)
+    print(collection)
+    assert collection.load_state == 'loaded'
+    assert collection.name == name
 
 def test_init_collection_by_name():
     collection = Collection(name="test")

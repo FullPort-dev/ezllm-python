@@ -36,4 +36,4 @@ THESE TESTS CAN'T BE RUN WITH OTHER TESTS BECAUSE IT SETS THE DEFAULT CLIENT TO 
 #     """
 #     c = ezllm.Client()
 #     print(c)
-#     assert c.key == os.getenv('EZLLM_ACCESS_KEY')
+#     assert c.key == os.getenv('EZLLM_API_KEY')

@@ -12,9 +12,11 @@ def test_upload_file():
     file = open('./tests/data/test_doc.md', 'r')
     col = Collection(name="Default Collection")
     doc = col.upload(file)
-
+    print(doc)
     assert doc.name == 'test_doc.md'
     assert doc.state == 'active'
+
+    assert len(doc.subdocs) > 0
 
 def test_upload_dont_await_processed():
     file = open('./tests/data/test_doc.md', 'r')

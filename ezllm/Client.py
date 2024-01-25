@@ -35,17 +35,15 @@ class SingletonMeta(type):
 class Client(metaclass=SingletonMeta):
     
     def __init__(self, key=None, secret=None,api_url=None,run_url=None):
-        self.key = key or os.getenv('EZLLM_ACCESS_KEY')
-        self.secret = secret or os.getenv('EZLLM_SECRET')
+        self.key = key or os.getenv('EZLLM_API_KEY')
         self.api_url = api_url or os.getenv('EZLLM_API_URL') or DEFAULT_API_URL
         self.run_url = run_url or os.getenv('EZLLM_RUN_URL') or DEFAULT_RUN_URL
         # print('INIT CLIENT', self.key, self.secret, self.api_url, self.run_url)
-        if self.key == None or self.secret == None:
+        if self.key == None:
             raise Exception("Please Provide a key and secret by passing it to Client() or adding to a .env https://docs.ezllm.io/quickstart")
         self.headers = {
             # "Content-Type": "application/json",
-            'X-Access-Key' : self.key,
-            'X-Access-Secret' : self.secret
+            'X-API-Key' : self.key
         }
         self.loaded_data = self.load()
         # TODO throw error if cannot pull workspace
@@ -68,6 +66,7 @@ class Client(metaclass=SingletonMeta):
                 timeout=60
             )
             response.raise_for_status()
+            # print(response.status_code, response.json())
         except requests.exceptions.HTTPError as errh:
             try:
                 print(f"Error: {response.json()}")
@@ -106,5 +105,3 @@ class Client(metaclass=SingletonMeta):
 
 def get_default_client():
     return Client()
-
-

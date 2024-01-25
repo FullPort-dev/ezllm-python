@@ -113,7 +113,7 @@ class Document(Generic[S], Entity):
         self._data = res.json()
         return self
 
-    def await_processed(self):
+    def await_active(self):
         MAX_POLLING_INTERVAL = 10
         interval = 1
         start = time.time()
@@ -123,7 +123,7 @@ class Document(Generic[S], Entity):
             time.sleep(interval)
             state = self.get_state()
             interval = min(interval*2, MAX_POLLING_INTERVAL)
-
+            print("POLLING STATE", state)
             if state == 'active':
                 break
             if state == 'error':

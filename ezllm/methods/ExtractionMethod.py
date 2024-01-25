@@ -1,13 +1,20 @@
+from typing import Type
 from pydantic import BaseModel
 from ezllm.methods.Base import MethodBase
 from ezllm.response import ExtractionMethodResponse
+from ezllm.types import AggTypes, LLMTypes
 
 
 
 
 class ExtractionMethod(MethodBase[ExtractionMethodResponse]):
-    def __init__(self, schema: BaseModel, agg = 'accumulate') -> None:
-        super().__init__(agg)
+    def __init__(
+            self,
+            schema: Type[BaseModel],
+            agg: AggTypes = 'accumulate',
+            llm: LLMTypes = 'gpt-3.5',
+        ) -> None:
+        super().__init__(agg, llm)
         self.schema = schema
     
     def json(self):
@@ -20,7 +27,8 @@ class ExtractionMethod(MethodBase[ExtractionMethodResponse]):
                 },
                 "metadata" : {                
                     "extract_schema" : json_schema,
-                }
+                },
+                "llm_type" : self.llm,
             }
         }
     

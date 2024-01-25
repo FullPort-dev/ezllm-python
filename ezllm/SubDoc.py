@@ -93,7 +93,7 @@ class SubDocs(Generic[S]):
             return self
         else:
             print("ERROR FETCHING DOCUMENT", response.status_code)
-            raise NotFound("Document")
+            # raise NotFound("Document")
 
     def get_cache(self):
         # TODO : basing load state off of data len is only temporary

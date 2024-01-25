@@ -40,15 +40,36 @@ def test_extraction():
     posts = response.data[0]['posts']
     dfs = response.dfs
     df = dfs['posts']
-    assert posts[2]['post_title'] == "[Serious] What's the scariest fact you wish you didn't know?"
+    assert posts[2]['post_title'] == "[Serious] What's the scariest fact you wish you didn't know?" or posts[2]['post_title'] == "What's the scariest fact you wish you didn't know?Serious Replies Only"
     assert posts[0]['upvotes'] == 7792
     assert posts[-1]['user'] == "minerman30"
 
     assert type(dfs) == dict
     assert type(df) == DataFrame
     assert len(df) == 10
+    assert response.costs.costs[0].limitId == 'gpt-3.5'
+
 
 """
 No need to test doc.run() as it's just a wrapper around this
 + this operation isn't free
 """
+
+
+def test_extraction_gpt4():
+    doc = Document(TEST_DOC_ID)
+    method = ExtractionMethod(schema=ExtractModel, llm='gpt-4')
+    response = doc.run(method)
+    print(response)
+    
+    posts = response.data[0]['posts']
+    dfs = response.dfs
+    df = dfs['posts']
+    assert posts[2]['post_title'] == "[Serious] What's the scariest fact you wish you didn't know?" or posts[2]['post_title'] == "What's the scariest fact you wish you didn't know?Serious Replies Only"
+    assert posts[0]['upvotes'] == 7792
+    assert posts[-1]['user'] == "minerman30"
+
+    assert type(dfs) == dict
+    assert type(df) == DataFrame
+    assert len(df) == 10
+    assert response.costs.costs[0].limitId == 'gpt-4'

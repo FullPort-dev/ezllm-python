@@ -37,7 +37,7 @@ def test_delete_doc():
     doc = Document(id=doc.id)
     assert doc.state == 'unprocessed'
 
-    doc.await_processed()
+    doc.await_active()
     assert doc.state == 'active'
     doc.delete()
     assert doc.state == 'deleted'

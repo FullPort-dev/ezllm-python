@@ -1,6 +1,6 @@
 from enum import Enum
 from io import BufferedReader
-from typing import TYPE_CHECKING, Any, List, Optional, overload
+from typing import IO, TYPE_CHECKING, Any, List, Optional, overload
 from ezllm.Documents import Documents
 from ezllm.Document import Document
 from ezllm.Entity import Entity
@@ -161,6 +161,14 @@ class Collection(Entity):
                 f'{self.client.workspace_api_url}/c/name/{self._name}', # TODO may need to serialize this?
                 headers=self.client.headers,
             )
+            if response.status_code == 404:
+                print("Collection doesn't exist creating, a new one")
+                # auto create the Collection
+                self.create(self.name, self.client)
+                response = requests.get(
+                    f'{self.client.workspace_api_url}/c/name/{self._name}', # TODO may need to serialize this?
+                    headers=self.client.headers,
+                )
 
         if response.status_code == 200:
             data = response.json()
@@ -179,7 +187,7 @@ class Collection(Entity):
 
     def upload(
             self,
-            file: Optional[BufferedReader] = None,
+            file: Optional[IO[bytes]] = None,
             path: Optional[str] = None,
             name: Optional[str] = None,
             type: Optional[FileTypes] = 'auto',
@@ -215,7 +223,7 @@ class Collection(Entity):
         
 
         if await_processed:
-            doc.await_processed()
+            doc.await_active()
             
         return doc
     

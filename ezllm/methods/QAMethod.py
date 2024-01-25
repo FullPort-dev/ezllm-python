@@ -17,7 +17,8 @@ class QAMethod(MethodBase[QAMethodResponse]):
                 },
                 "metadata" : {                
                     "questions" : self.questions,
-                }
+                },
+                "llm_type" : self.llm,
             }
         }
     
