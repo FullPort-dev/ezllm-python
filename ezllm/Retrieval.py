@@ -4,6 +4,7 @@ import requests
 
 from ezllm.Client import Client
 from ezllm.Filter import Filter
+from ezllm.errors import handle_request_errors
 from ezllm.methods import ExtractionMethod, QAMethod
 from ezllm.methods.Base import MethodBase
 from ezllm.response import ExtractionMethodResponse, QAMethodResponse, ResponseDoc
@@ -52,6 +53,8 @@ class RetrievalBase(Generic[T]):
         body = json.dumps(data, indent=4)
         # print(body)
         res = requests.post(f'{self.client.workspace_run_url}/run', data=body, headers=self.client.headers)
+        handle_request_errors(res)
+
         output = res.json()
 
         return method.format_response(output)
@@ -61,14 +64,16 @@ class RetrievalBase(Generic[T]):
         body = json.dumps(
             self.json()
         )
-        response = requests.post(url, data=body, headers=self.client.headers)
-        if response.status_code == 200:
-            data = response.json()
+        res = requests.post(url, data=body, headers=self.client.headers)
+        handle_request_errors(res)
+
+        if res.status_code == 200:
+            data = res.json()
             self.data = data
             self._output = self.ResponseClass(data)
             return self._output
         else:
-            print("Error: ", response.status_code)
+            print("Error: ", res.status_code)
         
         
     def json(self):

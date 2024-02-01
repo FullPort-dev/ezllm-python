@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Any, Dict, Generic, List, TypeVar
 
 import requests
 
-from ezllm.errors import NotFound
+from ezllm.errors import NotFound, handle_request_errors
 if TYPE_CHECKING:
     from ezllm.Document import Document
 
@@ -81,18 +81,20 @@ class SubDocs(Generic[S]):
         return f'{self.doc.url}/subdocs'
     
     def get(self):
-        response = requests.get(
+        res = requests.get(
             self.url,
             headers=self.doc.client.headers,
         )
-        if response.status_code == 200:
+        handle_request_errors(res)
+
+        if res.status_code == 200:
             # TODO format this into a Document
-            data = response.json()
+            data = res.json()
             self._subdocs = [self.SubDocClass(x) for x in data]
 
             return self
         else:
-            print("ERROR FETCHING DOCUMENT", response.status_code)
+            print("ERROR FETCHING DOCUMENT", res.status_code)
             # raise NotFound("Document")
 
     def get_cache(self):

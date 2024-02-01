@@ -33,7 +33,6 @@ class SingletonMeta(type):
 
 
 class Client(metaclass=SingletonMeta):
-    
     def __init__(self, key=None, secret=None,api_url=None,run_url=None):
         self.key = key or os.getenv('EZLLM_API_KEY')
         self.api_url = api_url or os.getenv('EZLLM_API_URL') or DEFAULT_API_URL
@@ -66,6 +65,7 @@ class Client(metaclass=SingletonMeta):
                 timeout=60
             )
             response.raise_for_status()
+            
             # print(response.status_code, response.json())
         except requests.exceptions.HTTPError as errh:
             try:

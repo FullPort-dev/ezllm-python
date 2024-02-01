@@ -1,11 +1,17 @@
 from typing import List
 from ezllm.response import QAMethodResponse
 from ezllm.methods.Base import MethodBase
+from ezllm.types import LLMTypes
 
 
 class QAMethod(MethodBase[QAMethodResponse]):
-    def __init__(self, questions: List[str], agg = 'accumulate') -> None:
-        super().__init__(agg)
+    def __init__(
+            self,
+            questions: List[str],
+            agg = 'accumulate',
+            llm: LLMTypes = 'gpt-3.5',
+        ) -> None:
+        super().__init__(agg, llm)
         self.questions = questions
     
     def json(self):

@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 import requests
 from ezllm.types import DocumentStateTypes, GroupTypes, MetadataFilterType
 
-from ezllm.errors import FileProcessingError, NotFound
+from ezllm.errors import FileProcessingError, NotFound, handle_request_errors
 from .Client import Client
 
 S = TypeVar('S', bound=SubDocs)
@@ -36,6 +36,8 @@ class Document(Generic[S], Entity):
             f'{self.url}/state',
             headers=self.client.headers,
         )
+        handle_request_errors(res)
+
         state = res.json()
         self._data['state'] = state
         return state
@@ -110,6 +112,8 @@ class Document(Generic[S], Entity):
             self.url,
             headers=headers,
         )
+        handle_request_errors(res)
+
         self._data = res.json()
         return self
 

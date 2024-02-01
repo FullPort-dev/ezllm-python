@@ -2,7 +2,7 @@ from typing import Dict
 import requests
 
 from ezllm import Client
-from ezllm.errors import NotFound
+from ezllm.errors import NotFound, handle_request_errors
 from ezllm.helpers import with_cache
 
 
@@ -27,13 +27,15 @@ class Entity:
 
     def get(self):
         self.load_state = 'loading'
-        response = requests.get(
+        res = requests.get(
             self.url,
             headers=self.client.headers,
         )
-        if response.status_code == 200:
+        handle_request_errors(res)
+
+        if res.status_code == 200:
             # TODO format this into a Document
-            data = response.json()
+            data = res.json()
             if type(data) == dict:
                 self._id = data.get('_id')
             self._data = data
@@ -43,7 +45,7 @@ class Entity:
             return self
         else:
             self.load_state = 'error'
-            print("ERROR FETCHING", response.status_code)
+            print("ERROR FETCHING", res.status_code)
             raise NotFound("")
     
     def get_cache(self):

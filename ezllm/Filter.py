@@ -1,3 +1,4 @@
+from ezllm.errors import handle_request_errors
 from ezllm.types import GroupTypes
 from .Document import Document
 from .Collection import Collection
@@ -86,17 +87,18 @@ class Filter:
         body = json.dumps(
             self.json()
         )
-        response = requests.post(url, data=body, headers=self.client.headers)
+        res = requests.post(url, data=body, headers=self.client.headers)
+        handle_request_errors(res)
         
         
-        if response.status_code == 200:
-            data= response.json()
+        if res.status_code == 200:
+            data= res.json()
             self.data = data
             self._output = FilterResponse(data)
             return self._output
         
         else:
-            print("Error: ", response.status_code)
+            print("Error: ", res.status_code)
 
     
     def get_cache(self):

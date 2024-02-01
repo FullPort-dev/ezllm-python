@@ -10,7 +10,7 @@ class MethodBase(Generic[T]):
     def __init__(
             self,
             agg: AggTypes = 'accumulate',
-            llm: LLMTypes = 'gpt-3.5',    
+            llm: LLMTypes = 'gpt-3.5',
         ) -> None:
         self.agg = agg
         self.llm = llm

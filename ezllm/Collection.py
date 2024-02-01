@@ -4,7 +4,7 @@ from typing import IO, TYPE_CHECKING, Any, List, Optional, overload
 from ezllm.Documents import Documents
 from ezllm.Document import Document
 from ezllm.Entity import Entity
-from ezllm.errors import NotFound
+from ezllm.errors import NotFound, handle_request_errors
 from ezllm.types import GroupTypes
 from .Client import Client
 import mimetypes
@@ -54,6 +54,7 @@ class Collection(Entity):
             headers=headers,
             data=json.dumps(data)
         )
+        handle_request_errors(res)
         res_json = res.json()
         return cls.from_data(data=res_json, client=client)
     
@@ -72,6 +73,7 @@ class Collection(Entity):
             headers=headers,
             data=json.dumps(data)
         )
+        handle_request_errors(res)
         self._data = res.json()
         return self
     
@@ -86,6 +88,7 @@ class Collection(Entity):
             self.url,
             headers=headers,
         )
+        handle_request_errors(res)
         self._data = res.json()
         return self
         
@@ -152,26 +155,31 @@ class Collection(Entity):
     def get(self):
         self.load_state = 'loading'
         if self._id is not None:
-            response = requests.get(
+            res = requests.get(
                 self.url,
                 headers=self.client.headers,
             )
+            handle_request_errors(res)
+
         elif self._name is not None:
-            response = requests.get(
+            res = requests.get(
                 f'{self.client.workspace_api_url}/c/name/{self._name}', # TODO may need to serialize this?
                 headers=self.client.headers,
             )
-            if response.status_code == 404:
+            handle_request_errors(res)
+            if res.status_code == 404:
                 print("Collection doesn't exist creating, a new one")
                 # auto create the Collection
                 self.create(self.name, self.client)
-                response = requests.get(
+                res = requests.get(
                     f'{self.client.workspace_api_url}/c/name/{self._name}', # TODO may need to serialize this?
                     headers=self.client.headers,
                 )
+                handle_request_errors(res)
 
-        if response.status_code == 200:
-            data = response.json()
+
+        if res.status_code == 200:
+            data = res.json()
             self._data = data
             self._id = data['_id']
             self.load_state = 'loaded'
@@ -212,14 +220,15 @@ class Collection(Entity):
             }),
         }
         
-        response = requests.post(
+        res = requests.post(
             url,
             headers=self.client.headers,
             data=data,
             files={'file' : (f'{file_name}', file, mimetype)},
         )
+        handle_request_errors(res)
         
-        doc = Document.from_data(response.json())
+        doc = Document.from_data(res.json())
         
 
         if await_processed:
